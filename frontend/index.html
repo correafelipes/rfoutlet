@@ -49,10 +49,16 @@
     <div id="p-toast-container"></div>
 
     <!-- Sidebar Estilo PrimeNG (Menu Lateral Branco/Cinza) -->
-    <aside class="w-64 bg-white flex-shrink-0 flex flex-col hidden lg:flex border-r border-slate-200 z-20">
-        <div class="h-16 flex items-center px-6 border-b border-slate-200">
-            <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
+    <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
+        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
+            <div class="flex items-center">
+                <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
+            </div>
+            <!-- Botão fechar no mobile -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-slate-500 hover:text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
         <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
@@ -93,12 +99,21 @@
         </div>
     </aside>
 
+    <!-- Overlay Fundo Escuro para Menu Mobile -->
+    <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-10 hidden lg:hidden"></div>
+
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
         
         <!-- Topbar PrimeNG Style -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm">
-            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard</h2>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
+            <div class="flex items-center gap-3">
+                <!-- Hamburger Menu Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-500 hover:text-slate-700 bg-slate-100 rounded-md">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard</h2>
+            </div>
             <div class="flex items-center gap-4">
                 <span class="relative flex h-3 w-3">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -288,6 +303,27 @@
 
     <!-- Scripts de Simulação PrimeNG e Dados -->
     <script>
+        // Menu Mobile (Responsivo)
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
+                // Abrir
+                sidebar.classList.remove('hidden', '-translate-x-full');
+                sidebar.classList.add('flex', 'translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                // Fechar
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                setTimeout(() => {
+                    if (window.innerWidth < 1024) sidebar.classList.add('hidden');
+                }, 300); // aguarda animação
+            }
+        }
+
         // Função para mostrar Toasts estilo PrimeNG
         function showToast(title, detail, severity = 'success') {
             const container = document.getElementById('p-toast-container');
@@ -337,6 +373,11 @@
                 b.classList.remove('nav-btn-active');
             });
             event.currentTarget.classList.add('nav-btn-active');
+
+            // Fechar menu mobile automaticamente ao clicar em uma opção
+            if (window.innerWidth < 1024) {
+                toggleMobileMenu();
+            }
         }
 
         async function loadData() {
