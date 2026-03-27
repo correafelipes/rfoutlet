@@ -384,7 +384,7 @@
         async function loadData() {
             try {
                 // Carregar Estoque
-                const resEst = await fetch(${API_BASE}/api/estoque');
+                const resEst = await fetch(`${API_BASE}/api/estoque`);
                 const estoque = await resEst.json();
                 const tableBody = document.getElementById('estoqueTable');
                 tableBody.innerHTML = '';
@@ -416,7 +416,7 @@
                 document.getElementById('totalEstoque').innerText = totalItems + " Peças";
 
                 // Carregar Caixa
-                const resCaixa = await fetch(${API_BASE}/api/caixa');
+                const resCaixa = await fetch(`${API_BASE}/api/caixa`);
                 const caixa = await resCaixa.json();
                 const caixaBody = document.getElementById('caixaTable');
                 caixaBody.innerHTML = '';
