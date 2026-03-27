@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard RF Outlet - Integra Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; }
+        
+        /* Estilo Corporativo PrimeNG (Simulação com Tailwind) */
+        .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 6px; }
+        .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; items-center; outline: none; border: 1px solid transparent; }
+        .p-button:hover { background-color: #2563eb; }
+        .p-button:focus { box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #93c5fd; }
+        .p-button-outlined { background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
+        .p-button-outlined:hover { background-color: #eff6ff; }
+        
+        .p-inputtext { font-family: inherit; font-size: 1rem; color: #334155; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; appearance: none; border-radius: 6px; outline: none; }
+        .p-inputtext:hover { border-color: #94a3b8; }
+        .p-inputtext:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
+
+        .p-datatable { border-collapse: collapse; width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+        .p-datatable th { padding: 1rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; font-weight: 600; color: #334155; background: #f8fafc; text-align: left; transition: box-shadow 0.2s; }
+        .p-datatable th:hover { background: #f1f5f9; cursor: pointer; }
+        .p-datatable td { padding: 1rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; color: #475569; }
+        .p-datatable tr:hover td { background: #f8fafc; }
+        .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+
+        .p-paginator { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-width: 0 1px 1px 1px; padding: 0.5rem 1rem; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
+        .p-paginator-element { cursor: pointer; min-width: 2.286rem; height: 2.286rem; border-radius: 50%; border: 0 none; display: inline-flex; align-items: center; justify-content: center; color: #475569; transition: box-shadow 0.2s, background-color 0.2s, color 0.2s; }
+        .p-paginator-element:hover { background: #e2e8f0; }
+        .p-paginator-element.p-highlight { background: #eff6ff; color: #3b82f6; font-weight: 700; }
+
+        /* Toast Container */
+        #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
+        .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
+        .p-toast-message.success { border-left-color: #22c55e; }
+        .p-toast-message.success .toast-icon { color: #22c55e; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
+    </style>
+</head>
+<body class="antialiased flex h-screen overflow-hidden">
+
+    <!-- Container de Toasts (Notificações estilo PrimeNG) -->
+    <div id="p-toast-container"></div>
+
+    <!-- Sidebar Estilo PrimeNG (Menu Lateral Branco/Cinza) -->
+    <aside class="w-64 bg-white flex-shrink-0 flex flex-col hidden lg:flex border-r border-slate-200 z-20">
+        <div class="h-16 flex items-center px-6 border-b border-slate-200">
+            <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
+        </div>
+
+        <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Painel Principal
+            </button>
+            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                Gestão de Produtos
+            </button>
+            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Financeiro
+            </button>
+            <button onclick="showSection('escala')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z"></path></svg>
+                Escala Mensal
+            </button>
+            <button onclick="showSection('redes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                Redes Sociais
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200">
+            <div class="flex items-center gap-3 mb-4 p-2">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600" id="userInitials">X</div>
+                <div class="overflow-hidden">
+                    <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
+                    <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="p-button p-button-outlined w-full text-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Desconectar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Topbar PrimeNG Style -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm">
+            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard</h2>
+            <div class="flex items-center gap-4">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <button onclick="showToast('Sistema Sincronizado', 'Todos os dados estão atualizados na nuvem Integra.', 'success')" class="text-slate-500 hover:text-slate-700 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 space-y-6">
+            
+            <!-- DASHBOARD SECTION -->
+            <section id="section-dashboard" class="content-section">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-card p-6 border-l-4 border-l-blue-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="block text-slate-500 font-medium mb-1">Faturamento (Hoje)</span>
+                                <div class="text-2xl font-bold text-slate-800" id="caixaTotal">R$ 0,00</div>
+                            </div>
+                            <div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-md flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                        </div>
+                        <span class="text-green-500 font-medium text-sm">+12% </span><span class="text-slate-500 text-sm">desde o último mês</span>
+                    </div>
+                    
+                    <div class="p-card p-6 border-l-4 border-l-orange-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="block text-slate-500 font-medium mb-1">Volume de Estoque</span>
+                                <div class="text-2xl font-bold text-slate-800" id="totalEstoque">...</div>
+                            </div>
+                            <div class="w-10 h-10 bg-orange-100 text-orange-500 rounded-md flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                            </div>
+                        </div>
+                        <span class="text-orange-500 font-medium text-sm">Atualizado </span><span class="text-slate-500 text-sm">agora há pouco</span>
+                    </div>
+
+                    <div class="p-card p-6 border-l-4 border-l-green-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="block text-slate-500 font-medium mb-1">Colaboradores Ativos</span>
+                                <div class="text-2xl font-bold text-slate-800">3 Registros</div>
+                            </div>
+                            <div class="w-10 h-10 bg-green-100 text-green-500 rounded-md flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                        </div>
+                        <span class="text-green-500 font-medium text-sm">Escala Normal </span><span class="text-slate-500 text-sm">hoje</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESTOQUE SECTION (PrimeNG DataTable Style) -->
+            <section id="section-estoque" class="content-section hidden">
+                <div class="p-card">
+                    <div class="p-datatable-header">
+                        <span class="text-xl">Catálogo de Produtos</span>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </span>
+                            <input type="text" class="p-inputtext pl-9 w-64" placeholder="Buscar por palavra-chave...">
+                        </div>
+                    </div>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>Código (SKU) <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
+                                <th>Marca / Descrição <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
+                                <th>Tamanho</th>
+                                <th>Estoque</th>
+                                <th>Preço (R$) <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estoqueTable"></tbody>
+                    </table>
+                    <div class="p-paginator">
+                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg></button>
+                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                        <button class="p-paginator-element p-highlight">1</button>
+                        <button class="p-paginator-element">2</button>
+                        <button class="p-paginator-element">3</button>
+                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg></button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button class="p-button" onclick="showToast('Aviso', 'Módulo de cadastro em desenvolvimento pelo Gerente Nero.', 'success')">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Novo Produto
+                    </button>
+                </div>
+            </section>
+
+            <!-- CAIXA SECTION -->
+            <section id="section-caixa" class="content-section hidden">
+                <div class="p-card">
+                    <div class="p-datatable-header">
+                        <span class="text-xl">Movimentação Diária de Caixa</span>
+                        <button class="p-button p-button-outlined bg-white">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Exportar CSV
+                        </button>
+                    </div>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Valor Registrado</th>
+                                <th>Descrição do Lançamento</th>
+                                <th>Data e Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="caixaTable"></tbody>
+                    </table>
+                    <div class="p-paginator">
+                        <span class="text-sm text-slate-500">Mostrando 1 a 10 de 50 registros</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESCALA SECTION -->
+            <section id="section-escala" class="content-section hidden">
+                <div class="p-card p-8">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4">Controle de Escala de Funcionários</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
+                        <p class="text-blue-700 text-sm font-bold">Módulo em Desenvolvimento</p>
+                        <p class="text-blue-600 text-xs mt-1">O calendário interativo PrimeNG Schedule (FullCalendar) será implementado na próxima versão pelo Gerente Geral Nero.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REDES SOCIAIS SECTION -->
+            <section id="section-redes" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full min-h-[500px]">
+                    <!-- Instagram Widget -->
+                    <div class="p-card flex flex-col h-full shadow-md">
+                        <div class="p-datatable-header flex justify-between items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white !border-0 !rounded-t-md">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                <span class="font-bold text-lg">Instagram</span>
+                            </div>
+                            <button onclick="showToast('Sincronizando', 'Buscando novas postagens...', 'success')" class="text-white hover:text-pink-200 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            </button>
+                        </div>
+                        <div class="p-6 flex-1 bg-slate-50 flex flex-col items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
+                            <div class="w-full h-full border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-8 bg-white text-center">
+                                <svg class="w-12 h-12 text-slate-300 mb-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                <h4 class="text-slate-600 font-bold mb-2">Conectar Conta do Instagram</h4>
+                                <p class="text-sm text-slate-400 mb-6">Integre com a API do Meta para exibir o feed e interações diretamente aqui.</p>
+                                <button class="p-button bg-pink-600 hover:bg-pink-700 border-none shadow-lg">Vincular Instagram da Loja</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outra Rede (TikTok / Facebook) Widget -->
+                    <div class="p-card flex flex-col h-full shadow-md">
+                        <div class="p-datatable-header flex justify-between items-center bg-blue-600 text-white !border-0 !rounded-t-md">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                                <span class="font-bold text-lg">Facebook / Outras</span>
+                            </div>
+                            <button onclick="showToast('Sincronizando', 'Buscando novas postagens...', 'success')" class="text-white hover:text-blue-200 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            </button>
+                        </div>
+                        <div class="p-6 flex-1 bg-slate-50 flex flex-col items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
+                            <div class="w-full h-full border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-8 bg-white text-center">
+                                <svg class="w-12 h-12 text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                                <h4 class="text-slate-600 font-bold mb-2">Conectar Rede Secundária</h4>
+                                <p class="text-sm text-slate-400 mb-6">Monitore métricas e engajamento da sua outra rede principal.</p>
+                                <button class="p-button bg-blue-600 hover:bg-blue-700 border-none shadow-lg">Vincular Segunda Conta</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts de Simulação PrimeNG e Dados -->
+    <script>
+        // Função para mostrar Toasts estilo PrimeNG
+        function showToast(title, detail, severity = 'success') {
+            const container = document.getElementById('p-toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-toast-message ${severity}`;
+            
+            let iconSvg = '<svg class="w-6 h-6 toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            
+            toast.innerHTML = `
+                ${iconSvg}
+                <div>
+                    <span class="block font-bold text-slate-800 mb-1">${title}</span>
+                    <span class="block text-sm text-slate-600">${detail}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" class="ml-auto text-slate-400 hover:text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        // Autenticação e Navegação
+        const userStr = localStorage.getItem('rfUser');
+        if (!userStr) {
+            window.location.href = 'login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            document.getElementById('userName').innerText = user.nome;
+            document.getElementById('userRole').innerText = user.funcao;
+            document.getElementById('userInitials').innerText = user.nome.charAt(0).toUpperCase();
+        }
+
+        function logout() {
+            localStorage.removeItem('rfUser');
+            window.location.href = 'login.html';
+        }
+
+        function showSection(name) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('section-' + name).classList.remove('hidden');
+            
+            const titles = { 'dashboard': 'Dashboard', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'escala': 'Escala Mensal', 'redes': 'Gestão de Redes Sociais' };
+            document.getElementById('pageTitle').innerText = titles[name];
+            
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('nav-btn-active');
+            });
+            event.currentTarget.classList.add('nav-btn-active');
+        }
+
+        async function loadData() {
+            try {
+                // Carregar Estoque
+                const resEst = await fetch('http://localhost:3001/api/estoque');
+                const estoque = await resEst.json();
+                const tableBody = document.getElementById('estoqueTable');
+                tableBody.innerHTML = '';
+                let totalItems = 0;
+                estoque.forEach(item => {
+                    totalItems += item.quantidade;
+                    
+                    // Badge PrimeNG Style
+                    let badgeClass = item.quantidade > 10 ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
+                    let badgeStatus = item.quantidade > 10 ? 'EM ESTOQUE' : 'BAIXO ESTOQUE';
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td class="font-semibold">${item.codigo}</td>
+                            <td>
+                                <div class="font-bold text-slate-800">${item.marca}</div>
+                                <div class="text-xs text-slate-500">${item.categoria}</div>
+                            </td>
+                            <td>${item.tamanho}</td>
+                            <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${badgeStatus} (${item.quantidade})</span></td>
+                            <td class="font-bold">R$ ${item.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                            <td class="text-center">
+                                <button class="p-button p-button-outlined p-2" title="Editar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+                                <button class="p-button p-button-outlined p-2 text-red-500 border-red-500 hover:bg-red-50" title="Excluir"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('totalEstoque').innerText = totalItems + " Peças";
+
+                // Carregar Caixa
+                const resCaixa = await fetch('http://localhost:3001/api/caixa');
+                const caixa = await resCaixa.json();
+                const caixaBody = document.getElementById('caixaTable');
+                caixaBody.innerHTML = '';
+                let totalCaixa = 0;
+                caixa.forEach(mov => {
+                    if(mov.tipo === 'ENTRADA') totalCaixa += mov.valor;
+                    else totalCaixa -= mov.valor;
+                    
+                    let badgeClass = mov.tipo === 'ENTRADA' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+
+                    caixaBody.innerHTML += `
+                        <tr>
+                            <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${mov.tipo}</span></td>
+                            <td class="font-bold">R$ ${mov.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                            <td>${mov.descricao}</td>
+                            <td class="text-sm text-slate-500">${new Date(mov.data).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('caixaTotal').innerText = "R$ " + totalCaixa.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+                // Toast de Boas Vindas
+                setTimeout(() => showToast('Login Efetuado', 'Bem-vindo ao painel RF Outlet.'), 500);
+
+            } catch (err) { console.error(err); }
+        }
+        
+        loadData();
+    </script>
+</body>
+</html>

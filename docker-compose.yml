@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Banco de Dados PostgreSQL (Padrão Integra)
+  db:
+    image: postgres:15-alpine
+    container_name: rfoutlet_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: rf123
+      POSTGRES_DB: rfoutlet_prod
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_rfoutlet:/var/lib/postgresql/data
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+    container_name: rfoutlet_api
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgres://admin:rf123@db:5432/rfoutlet_prod
+      - PORT=3001
+    depends_on:
+      - db
+
+volumes:
+  pgdata_rfoutlet:
