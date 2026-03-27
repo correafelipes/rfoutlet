@@ -95,7 +95,7 @@
             btn.innerHTML = '<div class="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
 
             try {
-                const res = await fetch('http://localhost:3001/api/login', {
+                const res = await fetch('https://rfoutlet.onrender.com/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ login, senha })
