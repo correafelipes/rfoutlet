@@ -106,7 +106,7 @@
 
                 if (data.success) {
                     localStorage.setItem('rfUser', JSON.stringify(data.user));
-                    window.location.href = 'index.html';
+                    window.location.href = 'admin.html';
                 } else {
                     errorMsg.classList.remove('hidden');
                     btn.innerHTML = 'ACESSAR DASHBOARD';
