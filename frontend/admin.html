@@ -3,319 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard RF Outlet - Integra Group</title>
+    <title>Painel ERP - RF Outlet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         
-        /* Estilo Corporativo PrimeNG */
-        .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 6px; }
-        .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; outline: none; border: 1px solid transparent; }
-        .p-button:hover { background-color: #2563eb; }
-        .p-button-outlined { background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
-        .p-button-outlined:hover { background-color: #eff6ff; }
+        .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 12px; overflow: hidden; }
+        .p-button { background-color: #0f172a; color: #ffffff; padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 8px; font-weight: 600; transition: all 0.2s; cursor: pointer; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; }
+        .p-button:hover { background-color: #1e293b; transform: translateY(-1px); }
+        .p-button-outlined { background-color: transparent; color: #0f172a; border-color: #cbd5e1; }
+        .p-button-outlined:hover { background-color: #f8fafc; border-color: #94a3b8; color: #0f172a; }
         
-        .p-inputtext { font-family: inherit; font-size: 0.875rem; color: #334155; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; }
-        .p-inputtext:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
+        .p-inputtext { font-family: inherit; font-size: 0.9rem; color: #1e293b; background: #ffffff; padding: 0.6rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+        .p-inputtext:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
-        .p-datatable { border-collapse: collapse; width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
-        .p-datatable th { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; font-weight: 600; color: #334155; background: #f8fafc; text-align: left; }
-        .p-datatable td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; color: #475569; }
-        .p-datatable tr:hover td { background: #f8fafc; }
-        .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-btn { display: flex; align-items: center; gap: 0.75rem; width: 100%; padding: 0.75rem 1.5rem; color: #64748b; font-weight: 500; transition: all 0.2s; border-right: 3px solid transparent; }
+        .nav-btn:hover { background-color: #f8fafc; color: #0f172a; }
+        .nav-btn-active { background-color: #eff6ff; color: #2563eb; font-weight: 700; border-right-color: #2563eb; }
 
-        .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
-        
-        #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
-        .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
-        .p-toast-message.success { border-left-color: #22c55e; }
+        /* Toast */
+        #p-toast-container { position: fixed; top: 20px; right: 20px; width: 350px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+        .p-toast-message { background: #fff; border-left: 6px solid #10b981; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-radius: 8px; padding: 1rem; animation: slideIn 0.3s ease-out forwards; }
         .p-toast-message.error { border-left-color: #ef4444; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8fafc; color: #475569; font-weight: 600; text-align: left; padding: 1rem; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 1rem; border-bottom: 1px solid #e2e8f0; color: #334155; font-size: 0.95rem; }
+        tr:hover td { background: #f8fafc; }
     </style>
 </head>
-<body class="antialiased flex h-screen overflow-hidden">
+<body class="flex h-screen overflow-hidden">
 
     <div id="p-toast-container"></div>
 
-    <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
-        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
-            <span class="text-slate-800 text-xl font-bold tracking-tight text-blue-600">RF Outlet (v0.1)</span>
+    <!-- Sidebar Dinâmica -->
+    <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform -translate-x-full lg:translate-x-0 shadow-sm">
+        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100">
+            <span class="text-slate-900 text-xl font-black tracking-tight">RF<span class="text-blue-600">OUTLET</span></span>
         </div>
 
-        <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
-            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Painel Córtex (Vendas)
-            </button>
-            <button onclick="showSection('loja_pdv')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                PDV Loja & Ponto RH
-            </button>
-            <button onclick="showSection('representantes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Transferência p/ Representante
-            </button>
-            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Gestão de Produtos Global
-            </button>
-            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Financeiro / Caixa
-            </button>
-            <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase">Administração</div>
-            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Gestão de Equipe (Vendedores)
-            </button>
+        <nav class="flex-1 py-6 space-y-2 overflow-y-auto" id="mainNav">
+            <!-- Menus injetados via JS de acordo com a Permissão (ACL) -->
         </nav>
 
-        <div class="p-4 border-t border-slate-200">
-            <div class="flex items-center gap-3 mb-4 p-2">
+        <div class="p-6 border-t border-slate-100 bg-slate-50">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-lg" id="userInitials">X</div>
                 <div class="overflow-hidden">
-                    <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
-                    <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
+                    <p class="text-slate-900 text-sm font-bold truncate" id="userName">...</p>
+                    <p class="text-slate-500 text-xs truncate font-medium" id="userRole">...</p>
                 </div>
             </div>
-            <button onclick="logout()" class="p-button p-button-outlined w-full text-sm">Desconectar</button>
+            <button onclick="logout()" class="p-button p-button-outlined w-full text-xs uppercase tracking-wider font-bold">Encerrar Sessão</button>
         </div>
     </aside>
 
-    <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-10 hidden lg:hidden"></div>
-
     <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
-            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Córtex (Painel Global)</h2>
+        <header class="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm w-full">
+            <h2 class="text-xl font-bold text-slate-800" id="pageTitle">Carregando...</h2>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold bg-green-100 text-green-700 px-3 py-1 rounded-full uppercase tracking-wider">Online</span>
+            </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 space-y-6">
-            
-            <!-- DASHBOARD DE VENDAS -->
-            <section id="section-dashboard" class="content-section">
-                
-                <!-- Pipeline (Previsão) - Novidade -->
-                <div class="p-card p-6 border-l-4 border-l-purple-500 mb-6 bg-purple-50">
-                    <span class="block text-purple-700 font-bold mb-1 text-sm uppercase tracking-widest">Pipeline (Previsão de Caixa)</span>
-                    <div class="text-3xl font-bold text-purple-900" id="previsaoPipeline">R$ 0,00</div>
-                    <div class="mt-2 text-sm text-purple-600">
-                        Soma de Pré-vendas da Loja + Pedidos de Representantes no App (Aguardando Pagamento/Faturamento).
-                    </div>
-                </div>
+        <main class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-8">
 
-                <!-- Filtros -->
-                <div class="p-card p-4 mb-6 flex flex-wrap gap-4 items-end bg-slate-50">
+            <!-- 1. DASHBOARD EXECUTIVO (Apenas TOTAL) -->
+            <section id="section-dashboard_executivo" class="content-section hidden">
+                <div class="flex flex-col md:flex-row justify-between md:items-end mb-8 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Início</label>
-                        <input type="date" id="filtroInicio" class="p-inputtext">
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Visão Executiva</h2>
+                        <p class="text-slate-500 mt-1 font-medium">Controle Global em Tempo Real.</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Fim</label>
-                        <input type="date" id="filtroFim" class="p-inputtext">
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="loadRelatorios()" class="p-button bg-blue-600">Filtrar Relatório</button>
-                        <button onclick="limparFiltros()" class="p-button p-button-outlined bg-white text-slate-600 border-slate-300">Limpar</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="p-card p-6 border-l-4 border-l-blue-500">
-                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Efetivado do Mês</span>
-                        <div class="text-3xl font-bold text-slate-800" id="mesAtualValor">R$ 0,00</div>
-                        <div class="mt-2 text-sm" id="mesAtualBadge">
-                            <span class="text-slate-400">Calculando...</span>
+                    <div class="flex flex-wrap gap-2 items-end bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">De</label>
+                            <input type="date" id="execFiltroInicio" class="p-inputtext py-2 text-sm">
                         </div>
-                    </div>
-                    <div class="p-card p-6 border-l-4 border-l-slate-400">
-                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Mês Anterior</span>
-                        <div class="text-3xl font-bold text-slate-500" id="mesAnteriorValor">R$ 0,00</div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Até</label>
+                            <input type="date" id="execFiltroFim" class="p-inputtext py-2 text-sm">
+                        </div>
+                        <button onclick="loadDashboardExecutivo()" class="p-button bg-slate-900 text-white shadow-md">Atualizar</button>
+                        <button onclick="limparFiltrosExec()" class="p-button p-button-outlined">Limpar</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Modern Spreadsheet / Metric Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="p-card p-6 border-t-4 border-slate-900 relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 opacity-5 group-hover:scale-110 transition-transform"><svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Faturamento</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-2" id="execFaturamento">R$ 0,00</h3>
+                        <p class="text-sm text-emerald-600 font-medium mt-3 flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> <span id="execMediaFaturamento">Média diária: Calculando...</span></p>
+                    </div>
+
+                    <div class="p-card p-6 border-t-4 border-indigo-500">
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Peças Vendidas</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-2" id="execPecasVendidas">0 un</h3>
+                        <p class="text-sm text-indigo-600 font-medium mt-3" id="execMediaPecas">Média diária: 0 un/dia</p>
+                    </div>
+
+                    <div class="p-card p-6 border-t-4 border-orange-500 bg-orange-50/50">
+                        <p class="text-xs text-orange-600 font-bold uppercase tracking-widest">Ativos Externos (Rua)</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-2" id="execPecasRua">0 un</h3>
+                        <p class="text-sm text-orange-700 font-medium mt-3">Mercadoria com Representantes</p>
+                    </div>
+
+                    <div class="p-card p-6 border-t-4 border-blue-500 bg-blue-50/50">
+                        <p class="text-xs text-blue-600 font-bold uppercase tracking-widest">Estoque Matriz (Loja)</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-2" id="execPecasLoja">0 un</h3>
+                        <p class="text-sm text-blue-700 font-medium mt-3">Disponível para Venda</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Big Buttons -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <div onclick="showSection('loja_pdv')" class="p-card p-10 flex flex-col items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500 hover:shadow-xl transition-all group bg-white relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-transparent to-blue-50/50"></div>
+                        <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform shadow-inner z-10">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <h3 class="text-3xl font-black text-slate-900 mb-2 z-10 tracking-tight">Varejo & Loja</h3>
+                        <p class="text-slate-500 text-center font-medium z-10 max-w-sm">Acessar PDV, Bater Ponto RH e gerenciar estoque interno da matriz.</p>
+                        <span class="mt-6 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold tracking-widest uppercase z-10 opacity-0 group-hover:opacity-100 transition-opacity">Acessar Módulo</span>
+                    </div>
+
+                    <div onclick="showSection('representantes')" class="p-card p-10 flex flex-col items-center justify-center cursor-pointer border-2 border-transparent hover:border-orange-500 hover:shadow-xl transition-all group bg-white relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-transparent to-orange-50/50"></div>
+                        <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform shadow-inner z-10">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-3xl font-black text-slate-900 mb-2 z-10 tracking-tight">Representantes Externos</h3>
+                        <p class="text-slate-500 text-center font-medium z-10 max-w-sm">Consignação, Maletas (Estoque em trânsito) e Pipeline de Pedidos.</p>
+                        <span class="mt-6 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold tracking-widest uppercase z-10 opacity-0 group-hover:opacity-100 transition-opacity">Acessar Módulo</span>
+                    </div>
+                </div>
+
+                <!-- Rankings Inteligentes -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div class="p-card">
-                        <div class="p-datatable-header bg-indigo-50 text-indigo-800 border-indigo-100">
-                            <span>🏆 Ranking por Marca</span>
+                        <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center"><svg class="w-5 h-5 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> Top Marcas</h3>
                         </div>
-                        <table class="p-datatable">
-                            <thead>
-                                <tr>
-                                    <th>Marca</th>
-                                    <th class="text-center">Peças</th>
-                                    <th class="text-right">Faturamento</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rankingMarcas"></tbody>
+                        <table class="w-full">
+                            <thead><tr><th>Marca</th><th class="text-right">Vendidas</th><th class="text-right">Faturamento</th></tr></thead>
+                            <tbody id="execRankingMarcas"></tbody>
                         </table>
                     </div>
 
                     <div class="p-card">
-                        <div class="p-datatable-header bg-emerald-50 text-emerald-800 border-emerald-100">
-                            <span>💼 Comissões (Vendedores / Representantes)</span>
+                        <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center"><svg class="w-5 h-5 mr-2 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg> Top Vendedores</h3>
                         </div>
-                        <table class="p-datatable">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th class="text-center">Peças</th>
-                                    <th class="text-right">Vendido</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rankingVendedores"></tbody>
+                        <table class="w-full">
+                            <thead><tr><th>Nome</th><th class="text-right">Peças</th><th class="text-right">Comissões (Total)</th></tr></thead>
+                            <tbody id="execRankingVendedores"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- REPRESENTANTES (TRANSFERÊNCIA DE ESTOQUE) -->
-            <section id="section-representantes" class="content-section hidden">
-                <div class="p-card p-6">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">🎒 Transferência de Mercadoria (Maleta Representante)</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Selecionar Representante</label>
-                            <select id="repSelect" class="p-inputtext w-full bg-white">
-                                <option value="">Carregando...</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Código do Produto (SKU)</label>
-                            <input type="text" id="repProdCodigo" class="p-inputtext w-full" placeholder="Ex: TXC-TSH-01">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Qtd para Transferir</label>
-                            <input type="number" id="repProdQtd" class="p-inputtext w-full" min="1" value="1">
-                        </div>
-                    </div>
-                    <button onclick="transferirParaRepresentante()" class="p-button bg-orange-500 hover:bg-orange-600 border-none w-full md:w-auto">Transferir da Loja para Maleta</button>
-                    
-                    <hr class="my-8 border-slate-200">
 
-                    <h4 class="text-lg font-bold text-slate-700 mb-4">Mercadoria em Posse do Representante</h4>
-                    <button onclick="loadEstoqueRep()" class="p-button p-button-outlined mb-4">Ver Estoque da Maleta</button>
-                    
-                    <table class="p-datatable">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Marca</th>
-                                <th>Tamanho</th>
-                                <th class="text-orange-600 font-bold">Qtd na Maleta</th>
-                                <th>Preço Venda</th>
-                            </tr>
-                        </thead>
-                        <tbody id="estoqueRepTable"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- PDV DA LOJA (RH e VENDAS) -->
+            <!-- 2. LOJA E VAREJO (Apenas LOJA ou TOTAL) -->
             <section id="section-loja_pdv" class="content-section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-6">Operação da Loja</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Ponto RH -->
-                    <div class="p-card p-6 border-t-4 border-t-blue-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">⏱️ Ponto Eletrônico (RH)</h3>
-                        <p class="text-sm text-slate-500 mb-6">Registre seu horário de entrada ou saída na loja.</p>
-                        
-                        <div class="flex gap-4">
-                            <button onclick="registrarPonto('ENTRADA')" class="p-button bg-green-500 hover:bg-green-600 w-full font-bold text-lg py-4">Bater ENTRADA</button>
-                            <button onclick="registrarPonto('SAIDA')" class="p-button bg-slate-500 hover:bg-slate-600 w-full font-bold text-lg py-4">Bater SAÍDA</button>
+                    <div class="p-card p-8 border-t-4 border-blue-500">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Ponto Eletrônico (RH)</h3>
+                        <p class="text-sm text-slate-500 mb-8 font-medium">Registre seu horário de trabalho para contabilidade de horas.</p>
+                        <div class="flex flex-col gap-4">
+                            <button onclick="registrarPonto('ENTRADA')" class="p-button bg-blue-600 hover:bg-blue-700 w-full py-4 text-lg shadow-md"><svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg> Bater ENTRADA</button>
+                            <button onclick="registrarPonto('SAIDA')" class="p-button bg-slate-800 hover:bg-slate-900 w-full py-4 text-lg shadow-md"><svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Bater SAÍDA</button>
                         </div>
                     </div>
 
-                    <!-- PDV Simples -->
-                    <div class="p-card p-6 border-t-4 border-t-emerald-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">🛒 PDV Rápido (Loja Física)</h3>
-                        <div class="space-y-4">
+                    <!-- PDV -->
+                    <div class="p-card p-8 border-t-4 border-emerald-500 bg-emerald-50/30">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">PDV (Frente de Caixa)</h3>
+                        <p class="text-sm text-slate-500 mb-8 font-medium">Lançamento rápido de vendas físicas.</p>
+                        <div class="space-y-5">
                             <div>
-                                <input type="text" id="pdvCpf" class="p-inputtext w-full" placeholder="CPF do Cliente (Opcional)">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">CPF na Nota (Opcional)</label>
+                                <input type="text" id="pdvCpf" class="p-inputtext" placeholder="000.000.000-00">
+                            </div>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Código SKU</label>
+                                    <input type="text" id="pdvCodigo" class="p-inputtext" placeholder="Ex: TXC-TSH-01">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Qtd</label>
+                                    <input type="number" id="pdvQtd" class="p-inputtext" value="1" min="1">
+                                </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="pdvCodigo" class="p-inputtext w-full" placeholder="Código do Produto">
-                                <input type="number" id="pdvQtd" class="p-inputtext w-full" placeholder="Quantidade" value="1" min="1">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Valor Total (R$)</label>
+                                    <input type="number" id="pdvValor" class="p-inputtext" placeholder="0.00">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Desconto</label>
+                                    <input type="text" id="pdvDesconto" class="p-inputtext" placeholder="R$ ou %">
+                                </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="number" id="pdvValor" class="p-inputtext w-full" placeholder="Valor Cobrado (R$)">
-                                <input type="number" id="pdvDesconto" class="p-inputtext w-full" placeholder="Desconto (R$ ou %)">
-                            </div>
-                            <div class="flex gap-2 pt-2">
-                                <button onclick="finalizarVendaLoja()" class="p-button bg-emerald-600 w-full">Finalizar Venda</button>
-                                <button onclick="gerarPreVenda()" class="p-button bg-purple-500 w-full">Gerar Pré-Venda</button>
-                            </div>
+                            <button onclick="showToast('Integração PDV', 'A emissão de NFe e baixa fiscal na loja será conectada no próximo patch ERP.', 'success')" class="p-button bg-emerald-600 hover:bg-emerald-700 w-full py-4 shadow-md font-bold text-lg mt-4">Concluir Venda</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ESTOQUE SECTION -->
-            <section id="section-estoque" class="content-section hidden">
-                <div class="p-card">
-                    <div class="p-datatable-header">
-                        <span class="text-xl">Catálogo Global de Produtos (Estoque Matriz)</span>
+
+            <!-- 3. REPRESENTANTES (Apenas REPRESENTANTE ou TOTAL) -->
+            <section id="section-representantes" class="content-section hidden">
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-6">Módulo Externo (B2B/Consignado)</h2>
+                
+                <div class="p-card p-8 mb-8 bg-white" id="blocoTransferencia" style="display:none;">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center"><svg class="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg> Abastecer Maleta (Transferência de Loja para Rua)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Representante Destino</label>
+                            <select id="repSelect" class="p-inputtext font-medium text-slate-700">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">SKU do Produto</label>
+                            <input type="text" id="repProdCodigo" class="p-inputtext font-mono" placeholder="DAM-JNS-01">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Quantidade</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="repProdQtd" class="p-inputtext w-20" min="1" value="1">
+                                <button onclick="transferirParaRepresentante()" class="p-button bg-slate-900 w-full">Enviar</button>
+                            </div>
+                        </div>
                     </div>
-                    <table class="p-datatable">
+                </div>
+
+                <div class="p-card">
+                    <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-orange-50/30">
+                        <h3 class="text-xl font-bold text-slate-800">📦 Estoque Atual na Maleta</h3>
+                        <button onclick="loadEstoqueRep()" class="p-button p-button-outlined bg-white">Sincronizar Estoque</button>
+                    </div>
+                    <table class="w-full">
                         <thead>
                             <tr>
                                 <th>Código</th>
-                                <th>Marca / Descrição</th>
-                                <th>Tamanho</th>
-                                <th>Estoque Local</th>
-                                <th>Preço (R$)</th>
+                                <th>Marca / Modelo</th>
+                                <th>Tam</th>
+                                <th class="text-center">Peças (Posse)</th>
+                                <th class="text-right">Preço de Tabela</th>
                             </tr>
                         </thead>
-                        <tbody id="estoqueTable"></tbody>
+                        <tbody id="estoqueRepTable">
+                            <tr><td colspan="5" class="text-center text-slate-400 py-8">Clique em "Sincronizar" para listar os produtos em sua posse.</td></tr>
+                        </tbody>
                     </table>
-                </div>
-            </section>
-
-            <!-- CAIXA SECTION -->
-            <section id="section-caixa" class="content-section hidden">
-                <div class="p-card">
-                    <div class="p-datatable-header">
-                        <span class="text-xl">Movimentação Diária de Caixa</span>
-                    </div>
-                    <table class="p-datatable">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Valor Registrado</th>
-                                <th>Descrição do Lançamento</th>
-                                <th>Data e Hora</th>
-                            </tr>
-                        </thead>
-                        <tbody id="caixaTable"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- EQUIPE SECTION -->
-            <section id="section-equipe" class="content-section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="p-card p-6 col-span-1 border-t-4 border-t-blue-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">➕ Novo Vendedor/Representante</h3>
-                        <div class="space-y-4">
-                            <input type="text" id="novoNome" class="p-inputtext w-full" placeholder="Nome Completo">
-                            <input type="text" id="novoLogin" class="p-inputtext w-full" placeholder="Login">
-                            <input type="text" id="novaSenha" class="p-inputtext w-full" value="123456" placeholder="Senha">
-                            <select id="novoFuncao" class="p-inputtext w-full bg-white">
-                                <option value="Vendedora">Vendedor(a) de Loja</option>
-                                <option value="Representante Externo">Representante Externo</option>
-                            </select>
-                            <button onclick="cadastrarVendedor()" class="p-button w-full bg-blue-600">Cadastrar</button>
-                        </div>
-                    </div>
-                    <div class="p-card col-span-2">
-                        <div class="p-datatable-header bg-slate-50">
-                            <span class="text-lg">Equipe Ativa</span>
-                        </div>
-                        <table class="p-datatable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Login</th>
-                                    <th>Cargo</th>
-                                </tr>
-                            </thead>
-                            <tbody id="equipeTable"></tbody>
-                        </table>
-                    </div>
                 </div>
             </section>
 
@@ -330,143 +277,155 @@
             const container = document.getElementById('p-toast-container');
             const toast = document.createElement('div');
             toast.className = `p-toast-message ${severity}`;
-            toast.innerHTML = `<div><span class="block font-bold mb-1">${title}</span><span class="block text-sm">${detail}</span></div>`;
+            toast.innerHTML = `<span class="block font-black tracking-tight text-slate-800 mb-1">${title}</span><span class="block text-sm text-slate-600 font-medium">${detail}</span>`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 4000);
         }
 
-        const userStr = localStorage.getItem('rfUser');
-        if (!userStr) window.location.href = 'login.html';
-        else {
+        // INIT & AUTH ROUTING
+        window.onload = () => {
+            const userStr = localStorage.getItem('rfUser');
+            if (!userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
             currentUser = JSON.parse(userStr);
             document.getElementById('userName').innerText = currentUser.nome;
             document.getElementById('userRole').innerText = currentUser.funcao;
-        }
+            document.getElementById('userInitials').innerText = currentUser.nome.charAt(0).toUpperCase();
+
+            buildNavigation(currentUser);
+        };
 
         function logout() {
             localStorage.removeItem('rfUser');
             window.location.href = 'login.html';
         }
 
-        function showSection(name) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById('section-' + name).classList.remove('hidden');
-            
-            const titles = { 
-                'dashboard': 'Córtex (Painel Global)', 
-                'estoque': 'Estoque Matriz (Loja)', 
-                'caixa': 'Financeiro', 
-                'equipe': 'Gestão de Vendedores',
-                'representantes': 'Maleta do Representante',
-                'loja_pdv': 'PDV & RH'
-            };
-            document.getElementById('pageTitle').innerText = titles[name];
-            
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
-            event.currentTarget.classList.add('nav-btn-active');
+        // BUILD SIDEBAR BASED ON ACL
+        function buildNavigation(user) {
+            const nav = document.getElementById('mainNav');
+            let html = '';
+            let defaultSection = '';
+
+            const p = user.permissoes; // 'TOTAL', 'LOJA', 'REPRESENTANTE'
+            const isOwner = p === 'TOTAL';
+
+            if (isOwner) {
+                html += `<button onclick="showSection('dashboard_executivo', this)" class="nav-btn nav-btn-active"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Visão Executiva</button>`;
+                defaultSection = 'dashboard_executivo';
+            }
+
+            if (isOwner || p === 'LOJA') {
+                html += `<button onclick="showSection('loja_pdv', this)" class="nav-btn ${!isOwner ? 'nav-btn-active' : ''}"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Varejo & Loja</button>`;
+                if (!defaultSection) defaultSection = 'loja_pdv';
+            }
+
+            if (isOwner || p === 'REPRESENTANTE') {
+                html += `<button onclick="showSection('representantes', this)" class="nav-btn ${!isOwner && p==='REPRESENTANTE' ? 'nav-btn-active' : ''}"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> Modo Representante</button>`;
+                if (!defaultSection) defaultSection = 'representantes';
+            }
+
+            nav.innerHTML = html;
+
+            // Ajustes visuais internos nas seções baseadas em permissão
+            if (isOwner) {
+                document.getElementById('blocoTransferencia').style.display = 'block';
+                loadVendedoresDrop();
+            }
+
+            showSection(defaultSection, document.querySelector('.nav-btn-active'));
         }
 
-        function limparFiltros() {
-            document.getElementById('filtroInicio').value = '';
-            document.getElementById('filtroFim').value = '';
-            loadRelatorios();
+        function showSection(name, btnElement) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            const sec = document.getElementById('section-' + name);
+            if(sec) sec.classList.remove('hidden');
+            
+            const titles = { 
+                'dashboard_executivo': 'Visão Executiva (Córtex)', 
+                'loja_pdv': 'Operação da Loja (Matriz)', 
+                'representantes': 'Vendas Externas (B2B)' 
+            };
+            document.getElementById('pageTitle').innerText = titles[name] || 'Painel';
+            
+            if (btnElement) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
+                btnElement.classList.add('nav-btn-active');
+            }
+
+            // Carregar dados dinâmicos da seção
+            if(name === 'dashboard_executivo') loadDashboardExecutivo();
         }
 
         const formatMoney = (val) => "R$ " + (val || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
-        async function loadRelatorios() {
+        // 1. DASHBOARD EXECUTIVO LOGIC
+        function limparFiltrosExec() {
+            document.getElementById('execFiltroInicio').value = '';
+            document.getElementById('execFiltroFim').value = '';
+            loadDashboardExecutivo();
+        }
+
+        async function loadDashboardExecutivo() {
             try {
-                const dataInicio = document.getElementById('filtroInicio').value;
-                const dataFim = document.getElementById('filtroFim').value;
+                const dataInicio = document.getElementById('execFiltroInicio').value;
+                const dataFim = document.getElementById('execFiltroFim').value;
                 let url = `${API_BASE}/api/relatorios/vendas`;
                 if(dataInicio && dataFim) url += `?data_inicio=${dataInicio}&data_fim=${dataFim}`;
 
                 const res = await fetch(url);
                 const relatorio = await res.json();
 
-                // Pipeline
-                document.getElementById('previsaoPipeline').innerText = formatMoney(relatorio.previsao_pipeline);
+                // Cards do Topo
+                const vGerais = relatorio.vendas_gerais || { pecas_vendidas: 0, faturamento: 0 };
+                document.getElementById('execFaturamento').innerText = formatMoney(vGerais.faturamento);
+                document.getElementById('execPecasVendidas').innerText = vGerais.pecas_vendidas + " un";
+                
+                // Calculo Media simples (assumindo mes de 30 dias se sem filtro, senao diff dias)
+                let dias = 30;
+                if(dataInicio && dataFim) {
+                    const d1 = new Date(dataInicio);
+                    const d2 = new Date(dataFim);
+                    dias = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
+                }
+                const mediaFat = vGerais.faturamento / dias;
+                const mediaPec = Math.round(vGerais.pecas_vendidas / dias);
 
-                const tbodyMarcas = document.getElementById('rankingMarcas');
+                document.getElementById('execMediaFaturamento').innerHTML = `Média: ${formatMoney(mediaFat)} / dia`;
+                document.getElementById('execMediaPecas').innerText = `Média: ~${mediaPec} un / dia`;
+                
+                document.getElementById('execPecasRua').innerText = (relatorio.estoque_representantes || 0) + " un";
+                document.getElementById('execPecasLoja').innerText = (relatorio.estoque_loja || 0) + " un";
+
+                // Ranking Marcas
+                const tbodyMarcas = document.getElementById('execRankingMarcas');
                 tbodyMarcas.innerHTML = '';
+                if(relatorio.por_marca.length === 0) tbodyMarcas.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400 py-4">Nenhuma venda encontrada.</td></tr>';
                 relatorio.por_marca.forEach(m => {
                     tbodyMarcas.innerHTML += `<tr>
-                        <td class="font-bold text-slate-700">${m.marca}</td>
-                        <td class="text-center">${m.qtd_total} un</td>
+                        <td class="font-bold text-slate-800">${m.marca}</td>
+                        <td class="text-right font-medium text-slate-600">${m.qtd_total} un</td>
                         <td class="text-right text-indigo-600 font-bold">${formatMoney(m.valor_total)}</td>
                     </tr>`;
                 });
 
-                const tbodyVends = document.getElementById('rankingVendedores');
+                // Ranking Vendedores
+                const tbodyVends = document.getElementById('execRankingVendedores');
                 tbodyVends.innerHTML = '';
+                if(relatorio.por_vendedor.length === 0) tbodyVends.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400 py-4">Nenhuma venda encontrada.</td></tr>';
                 relatorio.por_vendedor.forEach(v => {
                     tbodyVends.innerHTML += `<tr>
-                        <td class="font-bold text-slate-700">${v.vendedor_nome}</td>
-                        <td class="text-center">${v.qtd_total} un</td>
+                        <td class="font-bold text-slate-800">${v.vendedor_nome}</td>
+                        <td class="text-right font-medium text-slate-600">${v.qtd_total} un</td>
                         <td class="text-right text-emerald-600 font-bold">${formatMoney(v.valor_total)}</td>
                     </tr>`;
                 });
 
-                if(relatorio.por_mes && relatorio.por_mes.length > 0) {
-                    const mesAtual = relatorio.por_mes[0];
-                    document.getElementById('mesAtualValor').innerText = formatMoney(mesAtual.total_mes);
-                    if(mesAtual.comparativo) {
-                        document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior);
-                        let badgeColor = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
-                        document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${mesAtual.comparativo.porcentagem} vs. mês anterior</span>`;
-                    }
-                }
-            } catch (e) {}
+            } catch (e) { console.error("Erro Relatorios", e); }
         }
 
-        async function loadVendedores() {
-            try {
-                const res = await fetch(`${API_BASE}/api/vendedores`);
-                const equipe = await res.json();
-                
-                const tbody = document.getElementById('equipeTable');
-                const repSelect = document.getElementById('repSelect');
-                
-                tbody.innerHTML = '';
-                repSelect.innerHTML = '<option value="">Selecione...</option>';
-
-                equipe.forEach(v => {
-                    tbody.innerHTML += `<tr>
-                        <td>#${v.id}</td>
-                        <td class="font-bold">${v.nome}</td>
-                        <td>${v.login}</td>
-                        <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${v.funcao}</span></td>
-                    </tr>`;
-
-                    if(v.funcao.includes('Representante')) {
-                        repSelect.innerHTML += `<option value="${v.id}">${v.nome}</option>`;
-                    }
-                });
-            } catch (e) {}
-        }
-
-        async function cadastrarVendedor() {
-            const nome = document.getElementById('novoNome').value;
-            const login = document.getElementById('novoLogin').value;
-            const senha = document.getElementById('novaSenha').value;
-            const funcao = document.getElementById('novoFuncao').value;
-
-            if(!nome || !login || !senha) return showToast('Erro', 'Preencha todos os campos.', 'error');
-            try {
-                const res = await fetch(`${API_BASE}/api/usuarios`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ nome, login, senha, funcao })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    showToast('Sucesso', 'Vendedor/Representante cadastrado!');
-                    loadVendedores();
-                } else showToast('Erro', data.error, 'error');
-            } catch (e) {}
-        }
-
-        // PONTO RH
+        // 2. LOJA PDV E PONTO
         async function registrarPonto(tipo) {
             try {
                 const res = await fetch(`${API_BASE}/api/ponto`, {
@@ -475,102 +434,80 @@
                     body: JSON.stringify({ usuario_id: currentUser.id, usuario_nome: currentUser.nome, tipo })
                 });
                 const data = await res.json();
-                if(data.success) showToast('Ponto Registrado', `Seu ponto de ${tipo} foi gravado.`, 'success');
+                if(data.success) showToast('Ponto Registrado', `Relógio sincronizado. ${tipo} confirmada com sucesso!`, 'success');
             } catch (e) { showToast('Erro', 'Falha ao bater o ponto.', 'error'); }
         }
 
-        // TRANSFERENCIA DE MALETA
+        // 3. REPRESENTANTES (TRANSFERENCIA E MALETA)
+        async function loadVendedoresDrop() {
+            try {
+                const res = await fetch(`${API_BASE}/api/vendedores`);
+                const equipe = await res.json();
+                const repSelect = document.getElementById('repSelect');
+                repSelect.innerHTML = '<option value="">Selecione o Representante...</option>';
+                equipe.forEach(v => {
+                    if(v.funcao.includes('Representante')) {
+                        // usamos login no server_v0.2
+                        repSelect.innerHTML += `<option value="${v.username || v.login}">${v.nome}</option>`; 
+                    }
+                });
+            } catch (e) {}
+        }
+
         async function transferirParaRepresentante() {
-            const representante_id = document.getElementById('repSelect').value;
+            const representante_login = document.getElementById('repSelect').value;
             const codigo = document.getElementById('repProdCodigo').value;
             const quantidade_transferir = document.getElementById('repProdQtd').value;
 
-            if(!representante_id || !codigo || !quantidade_transferir) return showToast('Erro', 'Preencha todos os campos da maleta', 'error');
+            if(!representante_login || !codigo || !quantidade_transferir) return showToast('Erro', 'Preencha todos os campos para despachar a maleta.', 'error');
 
             try {
                 const res = await fetch(`${API_BASE}/api/estoque/transferir`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ representante_id, codigo, quantidade_transferir })
+                    body: JSON.stringify({ representante_login, codigo, quantidade_transferir })
                 });
                 const data = await res.json();
                 if(data.success) {
-                    showToast('Transferência Concluída', data.message, 'success');
-                    loadOutros(); // recarrega o estoque principal
-                } else showToast('Erro', data.error, 'error');
+                    showToast('Despacho Concluído', data.message, 'success');
+                    document.getElementById('repProdCodigo').value = '';
+                    document.getElementById('repProdQtd').value = 1;
+                    if(currentUser.permissoes === 'TOTAL') loadDashboardExecutivo(); // Atualiza contador
+                } else showToast('Aviso de Estoque', data.error, 'error');
             } catch (e) {}
         }
 
         async function loadEstoqueRep() {
-            const representante_id = document.getElementById('repSelect').value;
-            if(!representante_id) return showToast('Aviso', 'Selecione um Representante primeiro.', 'error');
+            let loginBusca = currentUser.username || currentUser.login;
+            
+            // Se for dono e tiver selecionado alguem no drop, visualiza o dele
+            if(currentUser.permissoes === 'TOTAL') {
+                const drop = document.getElementById('repSelect').value;
+                if(drop) loginBusca = drop;
+                else return showToast('Aviso', 'Selecione um representante na lista acima primeiro.', 'error');
+            }
 
             try {
-                const res = await fetch(`${API_BASE}/api/estoque?local=REP_${representante_id}`);
+                const res = await fetch(`${API_BASE}/api/estoque?local=REP_${loginBusca}`);
                 const estoque = await res.json();
                 const tbody = document.getElementById('estoqueRepTable');
                 tbody.innerHTML = '';
                 
-                if(estoque.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4">A maleta deste representante está vazia.</td></tr>';
+                if(estoque.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-slate-400 font-medium">A maleta está vazia. Solicite mercadorias na loja.</td></tr>';
 
                 estoque.forEach(item => {
                     tbody.innerHTML += `<tr>
-                        <td class="font-bold">${item.codigo}</td>
-                        <td>${item.marca}</td>
+                        <td class="font-bold text-slate-800">${item.codigo}</td>
+                        <td class="text-slate-600">${item.marca} <span class="text-xs">(${item.categoria})</span></td>
                         <td>${item.tamanho}</td>
-                        <td class="text-orange-600 font-bold">${item.quantidade} un</td>
-                        <td>R$ ${item.preco.toFixed(2)}</td>
+                        <td class="text-center text-orange-600 font-black">${item.quantidade} un</td>
+                        <td class="text-right font-bold text-slate-900">R$ ${item.preco.toFixed(2)}</td>
                     </tr>`;
                 });
+                showToast('Sincronizado', 'Estoque da maleta atualizado com sucesso.', 'success');
             } catch (e) {}
         }
 
-        // SIMULACAO DE VENDAS E PRE-VENDA (PDV RÁPIDO)
-        function finalizarVendaLoja() {
-            showToast('PDV Simples', 'Integração de venda direta e geração de nota conectada com a v0.2 em breve. Use o sistema original para emitir notas por enquanto.', 'success');
-        }
-        function gerarPreVenda() {
-            showToast('Pipeline Atualizado', 'Pré-venda de R$ 800,00 enviada para a fila (Pipeline).', 'success');
-        }
-
-        async function loadOutros() {
-            try {
-                // Estoque só da loja
-                const resEst = await fetch(`${API_BASE}/api/estoque?local=LOJA`);
-                const estoque = await resEst.json();
-                const tableBody = document.getElementById('estoqueTable');
-                tableBody.innerHTML = '';
-                estoque.forEach(item => {
-                    tableBody.innerHTML += `<tr>
-                        <td class="font-semibold">${item.codigo}</td>
-                        <td><div class="font-bold">${item.marca}</div><div class="text-xs text-slate-500">${item.categoria}</div></td>
-                        <td>${item.tamanho}</td>
-                        <td class="font-bold">${item.quantidade}</td>
-                        <td>R$ ${item.preco.toFixed(2)}</td>
-                    </tr>`;
-                });
-
-                const resCaixa = await fetch(`${API_BASE}/api/caixa`);
-                const caixa = await resCaixa.json();
-                const caixaBody = document.getElementById('caixaTable');
-                caixaBody.innerHTML = '';
-                caixa.forEach(mov => {
-                    let badgeClass = mov.tipo === 'ENTRADA' ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100';
-                    caixaBody.innerHTML += `<tr>
-                        <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${mov.tipo}</span></td>
-                        <td class="font-bold">R$ ${mov.valor.toFixed(2)}</td>
-                        <td>${mov.descricao}</td>
-                        <td class="text-sm text-slate-500">${new Date(mov.data).toLocaleString()}</td>
-                    </tr>`;
-                });
-            } catch (err) {}
-        }
-
-        window.onload = () => {
-            loadRelatorios();
-            loadVendedores();
-            loadOutros();
-        };
     </script>
 </body>
 </html>

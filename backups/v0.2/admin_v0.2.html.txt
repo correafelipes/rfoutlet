@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard RF Outlet - Integra Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; }
+        
+        /* Estilo Corporativo PrimeNG */
+        .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 6px; }
+        .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; outline: none; border: 1px solid transparent; }
+        .p-button:hover { background-color: #2563eb; }
+        .p-button-outlined { background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
+        .p-button-outlined:hover { background-color: #eff6ff; }
+        
+        .p-inputtext { font-family: inherit; font-size: 0.875rem; color: #334155; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; }
+        .p-inputtext:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
+
+        .p-datatable { border-collapse: collapse; width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+        .p-datatable th { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; font-weight: 600; color: #334155; background: #f8fafc; text-align: left; }
+        .p-datatable td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; color: #475569; }
+        .p-datatable tr:hover td { background: #f8fafc; }
+        .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+
+        .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
+        
+        #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
+        .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
+        .p-toast-message.success { border-left-color: #22c55e; }
+        .p-toast-message.error { border-left-color: #ef4444; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body class="antialiased flex h-screen overflow-hidden">
+
+    <div id="p-toast-container"></div>
+
+    <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
+        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
+            <span class="text-slate-800 text-xl font-bold tracking-tight text-blue-600">RF Outlet (v0.1)</span>
+        </div>
+
+        <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                Painel Córtex (Vendas)
+            </button>
+            <button onclick="showSection('loja_pdv')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                PDV Loja & Ponto RH
+            </button>
+            <button onclick="showSection('representantes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                Transferência p/ Representante
+            </button>
+            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                Gestão de Produtos Global
+            </button>
+            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                Financeiro / Caixa
+            </button>
+            <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase">Administração</div>
+            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                Gestão de Equipe (Vendedores)
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200">
+            <div class="flex items-center gap-3 mb-4 p-2">
+                <div class="overflow-hidden">
+                    <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
+                    <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="p-button p-button-outlined w-full text-sm">Desconectar</button>
+        </div>
+    </aside>
+
+    <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-10 hidden lg:hidden"></div>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
+            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Córtex (Painel Global)</h2>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 space-y-6">
+            
+            <!-- DASHBOARD DE VENDAS -->
+            <section id="section-dashboard" class="content-section">
+                
+                <!-- Pipeline (Previsão) - Novidade -->
+                <div class="p-card p-6 border-l-4 border-l-purple-500 mb-6 bg-purple-50">
+                    <span class="block text-purple-700 font-bold mb-1 text-sm uppercase tracking-widest">Pipeline (Previsão de Caixa)</span>
+                    <div class="text-3xl font-bold text-purple-900" id="previsaoPipeline">R$ 0,00</div>
+                    <div class="mt-2 text-sm text-purple-600">
+                        Soma de Pré-vendas da Loja + Pedidos de Representantes no App (Aguardando Pagamento/Faturamento).
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="p-card p-4 mb-6 flex flex-wrap gap-4 items-end bg-slate-50">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Início</label>
+                        <input type="date" id="filtroInicio" class="p-inputtext">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Fim</label>
+                        <input type="date" id="filtroFim" class="p-inputtext">
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="loadRelatorios()" class="p-button bg-blue-600">Filtrar Relatório</button>
+                        <button onclick="limparFiltros()" class="p-button p-button-outlined bg-white text-slate-600 border-slate-300">Limpar</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="p-card p-6 border-l-4 border-l-blue-500">
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Efetivado do Mês</span>
+                        <div class="text-3xl font-bold text-slate-800" id="mesAtualValor">R$ 0,00</div>
+                        <div class="mt-2 text-sm" id="mesAtualBadge">
+                            <span class="text-slate-400">Calculando...</span>
+                        </div>
+                    </div>
+                    <div class="p-card p-6 border-l-4 border-l-slate-400">
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Mês Anterior</span>
+                        <div class="text-3xl font-bold text-slate-500" id="mesAnteriorValor">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="p-card">
+                        <div class="p-datatable-header bg-indigo-50 text-indigo-800 border-indigo-100">
+                            <span>🏆 Ranking por Marca</span>
+                        </div>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Marca</th>
+                                    <th class="text-center">Peças</th>
+                                    <th class="text-right">Faturamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingMarcas"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="p-card">
+                        <div class="p-datatable-header bg-emerald-50 text-emerald-800 border-emerald-100">
+                            <span>💼 Comissões (Vendedores / Representantes)</span>
+                        </div>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th class="text-center">Peças</th>
+                                    <th class="text-right">Vendido</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingVendedores"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REPRESENTANTES (TRANSFERÊNCIA DE ESTOQUE) -->
+            <section id="section-representantes" class="content-section hidden">
+                <div class="p-card p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">🎒 Transferência de Mercadoria (Maleta Representante)</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Selecionar Representante</label>
+                            <select id="repSelect" class="p-inputtext w-full bg-white">
+                                <option value="">Carregando...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Código do Produto (SKU)</label>
+                            <input type="text" id="repProdCodigo" class="p-inputtext w-full" placeholder="Ex: TXC-TSH-01">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Qtd para Transferir</label>
+                            <input type="number" id="repProdQtd" class="p-inputtext w-full" min="1" value="1">
+                        </div>
+                    </div>
+                    <button onclick="transferirParaRepresentante()" class="p-button bg-orange-500 hover:bg-orange-600 border-none w-full md:w-auto">Transferir da Loja para Maleta</button>
+                    
+                    <hr class="my-8 border-slate-200">
+
+                    <h4 class="text-lg font-bold text-slate-700 mb-4">Mercadoria em Posse do Representante</h4>
+                    <button onclick="loadEstoqueRep()" class="p-button p-button-outlined mb-4">Ver Estoque da Maleta</button>
+                    
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Marca</th>
+                                <th>Tamanho</th>
+                                <th class="text-orange-600 font-bold">Qtd na Maleta</th>
+                                <th>Preço Venda</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estoqueRepTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PDV DA LOJA (RH e VENDAS) -->
+            <section id="section-loja_pdv" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Ponto RH -->
+                    <div class="p-card p-6 border-t-4 border-t-blue-500">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4">⏱️ Ponto Eletrônico (RH)</h3>
+                        <p class="text-sm text-slate-500 mb-6">Registre seu horário de entrada ou saída na loja.</p>
+                        
+                        <div class="flex gap-4">
+                            <button onclick="registrarPonto('ENTRADA')" class="p-button bg-green-500 hover:bg-green-600 w-full font-bold text-lg py-4">Bater ENTRADA</button>
+                            <button onclick="registrarPonto('SAIDA')" class="p-button bg-slate-500 hover:bg-slate-600 w-full font-bold text-lg py-4">Bater SAÍDA</button>
+                        </div>
+                    </div>
+
+                    <!-- PDV Simples -->
+                    <div class="p-card p-6 border-t-4 border-t-emerald-500">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4">🛒 PDV Rápido (Loja Física)</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <input type="text" id="pdvCpf" class="p-inputtext w-full" placeholder="CPF do Cliente (Opcional)">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="pdvCodigo" class="p-inputtext w-full" placeholder="Código do Produto">
+                                <input type="number" id="pdvQtd" class="p-inputtext w-full" placeholder="Quantidade" value="1" min="1">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" id="pdvValor" class="p-inputtext w-full" placeholder="Valor Cobrado (R$)">
+                                <input type="number" id="pdvDesconto" class="p-inputtext w-full" placeholder="Desconto (R$ ou %)">
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="finalizarVendaLoja()" class="p-button bg-emerald-600 w-full">Finalizar Venda</button>
+                                <button onclick="gerarPreVenda()" class="p-button bg-purple-500 w-full">Gerar Pré-Venda</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESTOQUE SECTION -->
+            <section id="section-estoque" class="content-section hidden">
+                <div class="p-card">
+                    <div class="p-datatable-header">
+                        <span class="text-xl">Catálogo Global de Produtos (Estoque Matriz)</span>
+                    </div>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Marca / Descrição</th>
+                                <th>Tamanho</th>
+                                <th>Estoque Local</th>
+                                <th>Preço (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estoqueTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CAIXA SECTION -->
+            <section id="section-caixa" class="content-section hidden">
+                <div class="p-card">
+                    <div class="p-datatable-header">
+                        <span class="text-xl">Movimentação Diária de Caixa</span>
+                    </div>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Valor Registrado</th>
+                                <th>Descrição do Lançamento</th>
+                                <th>Data e Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="caixaTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- EQUIPE SECTION -->
+            <section id="section-equipe" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="p-card p-6 col-span-1 border-t-4 border-t-blue-500">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4">➕ Novo Vendedor/Representante</h3>
+                        <div class="space-y-4">
+                            <input type="text" id="novoNome" class="p-inputtext w-full" placeholder="Nome Completo">
+                            <input type="text" id="novoLogin" class="p-inputtext w-full" placeholder="Login">
+                            <input type="text" id="novaSenha" class="p-inputtext w-full" value="123456" placeholder="Senha">
+                            <select id="novoFuncao" class="p-inputtext w-full bg-white">
+                                <option value="Vendedora">Vendedor(a) de Loja</option>
+                                <option value="Representante Externo">Representante Externo</option>
+                            </select>
+                            <button onclick="cadastrarVendedor()" class="p-button w-full bg-blue-600">Cadastrar</button>
+                        </div>
+                    </div>
+                    <div class="p-card col-span-2">
+                        <div class="p-datatable-header bg-slate-50">
+                            <span class="text-lg">Equipe Ativa</span>
+                        </div>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Login</th>
+                                    <th>Cargo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="equipeTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : (window.location.hostname.includes('vercel.app') ? 'https://rfoutlet.onrender.com' : '');
+        let currentUser = null;
+
+        function showToast(title, detail, severity = 'success') {
+            const container = document.getElementById('p-toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-toast-message ${severity}`;
+            toast.innerHTML = `<div><span class="block font-bold mb-1">${title}</span><span class="block text-sm">${detail}</span></div>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        const userStr = localStorage.getItem('rfUser');
+        if (!userStr) window.location.href = 'login.html';
+        else {
+            currentUser = JSON.parse(userStr);
+            document.getElementById('userName').innerText = currentUser.nome;
+            document.getElementById('userRole').innerText = currentUser.funcao;
+        }
+
+        function logout() {
+            localStorage.removeItem('rfUser');
+            window.location.href = 'login.html';
+        }
+
+        function showSection(name) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('section-' + name).classList.remove('hidden');
+            
+            const titles = { 
+                'dashboard': 'Córtex (Painel Global)', 
+                'estoque': 'Estoque Matriz (Loja)', 
+                'caixa': 'Financeiro', 
+                'equipe': 'Gestão de Vendedores',
+                'representantes': 'Maleta do Representante',
+                'loja_pdv': 'PDV & RH'
+            };
+            document.getElementById('pageTitle').innerText = titles[name];
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
+            event.currentTarget.classList.add('nav-btn-active');
+        }
+
+        function limparFiltros() {
+            document.getElementById('filtroInicio').value = '';
+            document.getElementById('filtroFim').value = '';
+            loadRelatorios();
+        }
+
+        const formatMoney = (val) => "R$ " + (val || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+        async function loadRelatorios() {
+            try {
+                const dataInicio = document.getElementById('filtroInicio').value;
+                const dataFim = document.getElementById('filtroFim').value;
+                let url = `${API_BASE}/api/relatorios/vendas`;
+                if(dataInicio && dataFim) url += `?data_inicio=${dataInicio}&data_fim=${dataFim}`;
+
+                const res = await fetch(url);
+                const relatorio = await res.json();
+
+                // Pipeline
+                document.getElementById('previsaoPipeline').innerText = formatMoney(relatorio.previsao_pipeline);
+
+                const tbodyMarcas = document.getElementById('rankingMarcas');
+                tbodyMarcas.innerHTML = '';
+                relatorio.por_marca.forEach(m => {
+                    tbodyMarcas.innerHTML += `<tr>
+                        <td class="font-bold text-slate-700">${m.marca}</td>
+                        <td class="text-center">${m.qtd_total} un</td>
+                        <td class="text-right text-indigo-600 font-bold">${formatMoney(m.valor_total)}</td>
+                    </tr>`;
+                });
+
+                const tbodyVends = document.getElementById('rankingVendedores');
+                tbodyVends.innerHTML = '';
+                relatorio.por_vendedor.forEach(v => {
+                    tbodyVends.innerHTML += `<tr>
+                        <td class="font-bold text-slate-700">${v.vendedor_nome}</td>
+                        <td class="text-center">${v.qtd_total} un</td>
+                        <td class="text-right text-emerald-600 font-bold">${formatMoney(v.valor_total)}</td>
+                    </tr>`;
+                });
+
+                if(relatorio.por_mes && relatorio.por_mes.length > 0) {
+                    const mesAtual = relatorio.por_mes[0];
+                    document.getElementById('mesAtualValor').innerText = formatMoney(mesAtual.total_mes);
+                    if(mesAtual.comparativo) {
+                        document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior);
+                        let badgeColor = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${mesAtual.comparativo.porcentagem} vs. mês anterior</span>`;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function loadVendedores() {
+            try {
+                const res = await fetch(`${API_BASE}/api/vendedores`);
+                const equipe = await res.json();
+                
+                const tbody = document.getElementById('equipeTable');
+                const repSelect = document.getElementById('repSelect');
+                
+                tbody.innerHTML = '';
+                repSelect.innerHTML = '<option value="">Selecione...</option>';
+
+                equipe.forEach(v => {
+                    tbody.innerHTML += `<tr>
+                        <td>#${v.id}</td>
+                        <td class="font-bold">${v.nome}</td>
+                        <td>${v.login}</td>
+                        <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${v.funcao}</span></td>
+                    </tr>`;
+
+                    if(v.funcao.includes('Representante')) {
+                        repSelect.innerHTML += `<option value="${v.id}">${v.nome}</option>`;
+                    }
+                });
+            } catch (e) {}
+        }
+
+        async function cadastrarVendedor() {
+            const nome = document.getElementById('novoNome').value;
+            const login = document.getElementById('novoLogin').value;
+            const senha = document.getElementById('novaSenha').value;
+            const funcao = document.getElementById('novoFuncao').value;
+
+            if(!nome || !login || !senha) return showToast('Erro', 'Preencha todos os campos.', 'error');
+            try {
+                const res = await fetch(`${API_BASE}/api/usuarios`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nome, login, senha, funcao })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    showToast('Sucesso', 'Vendedor/Representante cadastrado!');
+                    loadVendedores();
+                } else showToast('Erro', data.error, 'error');
+            } catch (e) {}
+        }
+
+        // PONTO RH
+        async function registrarPonto(tipo) {
+            try {
+                const res = await fetch(`${API_BASE}/api/ponto`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ usuario_id: currentUser.id, usuario_nome: currentUser.nome, tipo })
+                });
+                const data = await res.json();
+                if(data.success) showToast('Ponto Registrado', `Seu ponto de ${tipo} foi gravado.`, 'success');
+            } catch (e) { showToast('Erro', 'Falha ao bater o ponto.', 'error'); }
+        }
+
+        // TRANSFERENCIA DE MALETA
+        async function transferirParaRepresentante() {
+            const representante_id = document.getElementById('repSelect').value;
+            const codigo = document.getElementById('repProdCodigo').value;
+            const quantidade_transferir = document.getElementById('repProdQtd').value;
+
+            if(!representante_id || !codigo || !quantidade_transferir) return showToast('Erro', 'Preencha todos os campos da maleta', 'error');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/estoque/transferir`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ representante_id, codigo, quantidade_transferir })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    showToast('Transferência Concluída', data.message, 'success');
+                    loadOutros(); // recarrega o estoque principal
+                } else showToast('Erro', data.error, 'error');
+            } catch (e) {}
+        }
+
+        async function loadEstoqueRep() {
+            const representante_id = document.getElementById('repSelect').value;
+            if(!representante_id) return showToast('Aviso', 'Selecione um Representante primeiro.', 'error');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/estoque?local=REP_${representante_id}`);
+                const estoque = await res.json();
+                const tbody = document.getElementById('estoqueRepTable');
+                tbody.innerHTML = '';
+                
+                if(estoque.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4">A maleta deste representante está vazia.</td></tr>';
+
+                estoque.forEach(item => {
+                    tbody.innerHTML += `<tr>
+                        <td class="font-bold">${item.codigo}</td>
+                        <td>${item.marca}</td>
+                        <td>${item.tamanho}</td>
+                        <td class="text-orange-600 font-bold">${item.quantidade} un</td>
+                        <td>R$ ${item.preco.toFixed(2)}</td>
+                    </tr>`;
+                });
+            } catch (e) {}
+        }
+
+        // SIMULACAO DE VENDAS E PRE-VENDA (PDV RÁPIDO)
+        function finalizarVendaLoja() {
+            showToast('PDV Simples', 'Integração de venda direta e geração de nota conectada com a v0.2 em breve. Use o sistema original para emitir notas por enquanto.', 'success');
+        }
+        function gerarPreVenda() {
+            showToast('Pipeline Atualizado', 'Pré-venda de R$ 800,00 enviada para a fila (Pipeline).', 'success');
+        }
+
+        async function loadOutros() {
+            try {
+                // Estoque só da loja
+                const resEst = await fetch(`${API_BASE}/api/estoque?local=LOJA`);
+                const estoque = await resEst.json();
+                const tableBody = document.getElementById('estoqueTable');
+                tableBody.innerHTML = '';
+                estoque.forEach(item => {
+                    tableBody.innerHTML += `<tr>
+                        <td class="font-semibold">${item.codigo}</td>
+                        <td><div class="font-bold">${item.marca}</div><div class="text-xs text-slate-500">${item.categoria}</div></td>
+                        <td>${item.tamanho}</td>
+                        <td class="font-bold">${item.quantidade}</td>
+                        <td>R$ ${item.preco.toFixed(2)}</td>
+                    </tr>`;
+                });
+
+                const resCaixa = await fetch(`${API_BASE}/api/caixa`);
+                const caixa = await resCaixa.json();
+                const caixaBody = document.getElementById('caixaTable');
+                caixaBody.innerHTML = '';
+                caixa.forEach(mov => {
+                    let badgeClass = mov.tipo === 'ENTRADA' ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100';
+                    caixaBody.innerHTML += `<tr>
+                        <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${mov.tipo}</span></td>
+                        <td class="font-bold">R$ ${mov.valor.toFixed(2)}</td>
+                        <td>${mov.descricao}</td>
+                        <td class="text-sm text-slate-500">${new Date(mov.data).toLocaleString()}</td>
+                    </tr>`;
+                });
+            } catch (err) {}
+        }
+
+        window.onload = () => {
+            loadRelatorios();
+            loadVendedores();
+            loadOutros();
+        };
+    </script>
+</body>
+</html>
