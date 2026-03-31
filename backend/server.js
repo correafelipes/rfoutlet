@@ -17,7 +17,7 @@ const db = new sqlite3.Database('./integra_rfoutlet.db', (err) => {
     if (err) {
         console.error('❌ Erro Inesperado no Banco', err);
     } else {
-        console.log('✅ Banco de Dados conectado (SQLite). Preparando Tabelas...');
+        console.log('✅ Banco de Dados conectado (SQLite). Preparando Tabelas (v0.1)...');
         setupDatabase();
     }
 });
@@ -37,16 +37,43 @@ function setupDatabase() {
             )
         `);
 
-        // Tabela de Estoque
+        // Tabela de Estoque (Modificada para Omnichannel)
+        // O campo 'local' será 'LOJA' ou o ID do Representante (ex: 'REP_3')
         db.run(`
             CREATE TABLE IF NOT EXISTS estoque (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                codigo TEXT UNIQUE NOT NULL,
+                codigo TEXT NOT NULL,
                 marca TEXT NOT NULL,
                 categoria TEXT NOT NULL,
                 tamanho TEXT,
                 quantidade INTEGER DEFAULT 0,
-                preco REAL NOT NULL
+                preco REAL NOT NULL,
+                local TEXT DEFAULT 'LOJA'
+            )
+        `);
+
+        // Tabela de Ponto RH
+        db.run(`
+            CREATE TABLE IF NOT EXISTS ponto_horas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                usuario_id INTEGER NOT NULL,
+                usuario_nome TEXT,
+                tipo TEXT NOT NULL, -- 'ENTRADA', 'SAIDA'
+                data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Tabela de Pré-vendas (Pipeline/Forecast)
+        db.run(`
+            CREATE TABLE IF NOT EXISTS pre_vendas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                vendedor_id INTEGER,
+                vendedor_nome TEXT,
+                cliente_cpf TEXT,
+                valor_total REAL,
+                status TEXT DEFAULT 'PENDENTE', -- 'PENDENTE', 'CONVERTIDA', 'CANCELADA'
+                origem TEXT DEFAULT 'LOJA', -- 'LOJA' ou 'APP_REPRESENTANTE'
+                data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
 
@@ -86,15 +113,15 @@ function setupDatabase() {
             )
         `);
 
-        console.log('✅ Tabelas criadas (Usuários, Estoque, Caixa, Vendas, Escala).');
+        console.log('✅ Tabelas Omnichannel (v0.1) criadas com sucesso.');
 
-        // Populando dados (Seeding)
+        // Populando dados (Seeding) se for primeiro uso
         db.get('SELECT COUNT(*) as count FROM usuarios', (err, row) => {
             if (row && row.count === 0) {
                 db.run(`INSERT INTO usuarios (nome, login, senha, funcao, permissoes) VALUES 
                     ('Administrador', 'admin', '123456', 'Gerente Geral', 'TOTAL'),
                     ('Maria (Vendedora)', 'maria', '123', 'Vendedora', 'BASICO'),
-                    ('João (Vendedor)', 'joao', '123', 'Vendedor', 'BASICO'),
+                    ('João (Representante)', 'joao', '123', 'Representante Externo', 'BASICO'),
                     ('Márcio', 'marcio', '123', 'Estoquista', 'ESTOQUE')
                 `);
                 console.log('👥 Usuários base criados.');
@@ -103,33 +130,26 @@ function setupDatabase() {
 
         db.get('SELECT COUNT(*) as count FROM estoque', (err, row) => {
             if (row && row.count === 0) {
-                db.run(`INSERT INTO estoque (codigo, marca, categoria, tamanho, quantidade, preco) VALUES 
-                    ('DAM-JNS-01', 'Damyller', 'Calça Jeans Skinny Masculina', '42', 20, 329.90),
-                    ('DAM-JNS-02', 'Damyller', 'Calça Jeans Flare Feminina', '38', 15, 349.90),
-                    ('DAM-SHRT-03', 'Damyller', 'Shorts Jeans Feminino', '36', 12, 189.90),
-                    ('TXC-TSH-01', 'TXC', 'Camiseta Básica Logo Grande', 'G', 45, 99.90),
-                    ('TXC-TSH-02', 'TXC', 'Camiseta Polo Custom Fit', 'M', 25, 159.90),
-                    ('TXC-JNS-03', 'TXC', 'Calça Jeans Reta', '44', 10, 289.90),
-                    ('LEV-501-01', 'Levi''s', 'Calça Jeans 501 Original', '40', 8, 499.00),
-                    ('LEV-511-02', 'Levi''s', 'Calça Jeans 511 Slim', '42', 14, 459.00),
-                    ('LAC-POLO-01', 'Lacoste', 'Camisa Polo Piquet L.12.12', '4', 30, 549.00),
-                    ('CK-UND-01', 'Calvin Klein', 'Cueca Boxer Cotton (Kit 3)', 'M', 50, 129.00)
-                `);
-                console.log("👕 Estoque expandido com códigos oficiais.");
+                // Inserir apenas se estiver vazio
+                const stmt = db.prepare('INSERT INTO estoque (codigo, marca, categoria, tamanho, quantidade, preco, local) VALUES (?, ?, ?, ?, ?, ?, ?)');
+                stmt.run('DAM-JNS-01', 'Damyller', 'Calça Jeans Skinny Masculina', '42', 20, 329.90, 'LOJA');
+                stmt.run('DAM-JNS-02', 'Damyller', 'Calça Jeans Flare Feminina', '38', 15, 349.90, 'LOJA');
+                stmt.run('DAM-SHRT-03', 'Damyller', 'Shorts Jeans Feminino', '36', 12, 189.90, 'LOJA');
+                stmt.run('TXC-TSH-01', 'TXC', 'Camiseta Básica Logo Grande', 'G', 45, 99.90, 'LOJA');
+                stmt.run('LEV-501-01', 'Levi\'s', 'Calça Jeans 501 Original', '40', 8, 499.00, 'LOJA');
+                // Simulando que o João já pegou algumas camisetas pra vender na rua
+                stmt.run('TXC-TSH-01', 'TXC', 'Camiseta Básica Logo Grande', 'G', 5, 99.90, 'REP_3');
+                stmt.finalize();
+                console.log("👕 Estoque inicial expandido (com divisão de Local: Loja e Rua).");
             }
         });
 
-        // Simulando algumas vendas de meses anteriores para o comparativo
-        db.get('SELECT COUNT(*) as count FROM vendas', (err, row) => {
+        db.get('SELECT COUNT(*) as count FROM pre_vendas', (err, row) => {
             if (row && row.count === 0) {
-                db.run(`INSERT INTO vendas (vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, mes, data) VALUES 
-                    (2, 'Maria (Vendedora)', 'DAM-JNS-01', 'Damyller', 2, 659.80, '2026-02', '2026-02-15 10:00:00'),
-                    (3, 'João (Vendedor)', 'TXC-TSH-01', 'TXC', 3, 299.70, '2026-02', '2026-02-20 14:00:00'),
-                    (2, 'Maria (Vendedora)', 'LEV-501-01', 'Levi''s', 1, 499.00, '2026-03', '2026-03-05 11:30:00'),
-                    (3, 'João (Vendedor)', 'LAC-POLO-01', 'Lacoste', 2, 1098.00, '2026-03', '2026-03-10 16:20:00'),
-                    (2, 'Maria (Vendedora)', 'DAM-JNS-02', 'Damyller', 1, 349.90, '2026-03', '2026-03-25 09:15:00')
+                db.run(`INSERT INTO pre_vendas (vendedor_id, vendedor_nome, cliente_cpf, valor_total, origem) VALUES 
+                    (2, 'Maria (Vendedora)', '111.222.333-44', 800.00, 'LOJA'),
+                    (3, 'João (Representante)', '999.888.777-66', 1250.00, 'APP_REPRESENTANTE')
                 `);
-                console.log("💰 Vendas de teste inseridas (para comparar meses).");
             }
         });
     });
@@ -149,9 +169,18 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// Vendedores (Listar para o cadastro)
+// Registrar Ponto (Entrada / Saída)
+app.post('/api/ponto', (req, res) => {
+    const { usuario_id, usuario_nome, tipo } = req.body;
+    db.run('INSERT INTO ponto_horas (usuario_id, usuario_nome, tipo) VALUES (?, ?, ?)', [usuario_id, usuario_nome, tipo], function(err) {
+        if (err) return res.status(500).json({ error: 'Erro ao registrar ponto' });
+        res.json({ success: true, message: `Ponto de ${tipo} registrado com sucesso!`, id: this.lastID });
+    });
+});
+
+// Vendedores / Representantes
 app.get('/api/vendedores', (req, res) => {
-    db.all("SELECT id, nome, login, funcao FROM usuarios WHERE funcao LIKE '%Vendedor%' AND ativo = true", [], (err, rows) => {
+    db.all("SELECT id, nome, login, funcao FROM usuarios WHERE funcao LIKE '%Vendedor%' OR funcao LIKE '%Representante%' AND ativo = true", [], (err, rows) => {
         if (err) return res.status(500).json({ error: 'Erro ao buscar vendedores' });
         res.json(rows);
     });
@@ -168,48 +197,54 @@ app.post('/api/usuarios', (req, res) => {
     });
 });
 
-// Estoque
+// Estoque Dinâmico (Aceita filtro de ?local=LOJA ou ?local=REP_3)
 app.get('/api/estoque', (req, res) => {
-    db.all('SELECT * FROM estoque ORDER BY marca, categoria', [], (err, rows) => {
+    const local = req.query.local || 'LOJA';
+    db.all('SELECT * FROM estoque WHERE local = ? ORDER BY marca, categoria', [local], (err, rows) => {
         if (err) return res.status(500).json({ error: 'Erro ao buscar estoque' });
         res.json(rows);
     });
 });
 
-// Registrar Nova Venda (Baixa Estoque + Registra em Vendas e Caixa)
-app.post('/api/vendas', (req, res) => {
-    const { vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total } = req.body;
-    const mes = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
+// Transferência para Maleta (Rua)
+app.post('/api/estoque/transferir', (req, res) => {
+    const { codigo, quantidade_transferir, representante_id } = req.body;
+    const local_destino = `REP_${representante_id}`;
 
     db.serialize(() => {
         db.run('BEGIN TRANSACTION');
         
-        // 1. Inserir na tabela de Vendas
-        db.run(`INSERT INTO vendas (vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, mes) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, mes]);
-
-        // 2. Baixar do Estoque
-        db.run(`UPDATE estoque SET quantidade = quantidade - ? WHERE codigo = ?`, [quantidade, produto_codigo]);
-
-        // 3. Registrar no Caixa (Opcional, mas mantém a movimentação diária real)
-        db.run(`INSERT INTO movimentacoes (tipo, valor, descricao) VALUES ('ENTRADA', ?, ?)`, 
-                [valor_total, `Venda: ${quantidade}x ${marca} (${produto_codigo}) - Vendedor: ${vendedor_nome}`]);
+        // 1. Tira da loja
+        db.run('UPDATE estoque SET quantidade = quantidade - ? WHERE codigo = ? AND local = "LOJA"', [quantidade_transferir, codigo]);
+        
+        // 2. Coloca na maleta do representante
+        // Busca se ele já tem esse item na maleta
+        db.get('SELECT id FROM estoque WHERE codigo = ? AND local = ?', [codigo, local_destino], (err, row) => {
+            if (row) {
+                // Já tem, só soma
+                db.run('UPDATE estoque SET quantidade = quantidade + ? WHERE id = ?', [quantidade_transferir, row.id]);
+            } else {
+                // Não tem, copia do estoque da loja e cria pra ele
+                db.run(`INSERT INTO estoque (codigo, marca, categoria, tamanho, quantidade, preco, local) 
+                        SELECT codigo, marca, categoria, tamanho, ?, preco, ? 
+                        FROM estoque WHERE codigo = ? AND local = "LOJA" LIMIT 1`, 
+                        [quantidade_transferir, local_destino, codigo]);
+            }
+        });
 
         db.run('COMMIT', (err) => {
-            if (err) return res.status(500).json({ error: 'Erro ao processar venda' });
-            res.json({ success: true, message: 'Venda registrada com sucesso!' });
+            if (err) return res.status(500).json({ error: 'Erro ao transferir estoque' });
+            res.json({ success: true, message: `Mercadoria enviada para a maleta do Representante #${representante_id}` });
         });
     });
 });
 
-// Estatísticas e Relatórios (Métricas por Vendedor, Marca e Comparativo Mensal com Filtros)
+// Estatísticas Omnichannel e Relatórios
 app.get('/api/relatorios/vendas', (req, res) => {
     const { data_inicio, data_fim } = req.query;
     let filtro = '';
     let params = [];
 
-    // Monta o filtro de datas dinâmico (Dia, Mês, Ano ou Período Customizado)
     if (data_inicio && data_fim) {
         filtro = ' WHERE date(data) BETWEEN ? AND ? ';
         params = [data_inicio, data_fim];
@@ -218,36 +253,65 @@ app.get('/api/relatorios/vendas', (req, res) => {
     const relatorio = {};
 
     db.serialize(() => {
-        // 1. Vendas por Marca (Aplicando o filtro de data)
-        db.all(`SELECT marca, SUM(quantidade) as qtd_total, SUM(valor_total) as valor_total FROM vendas ${filtro} GROUP BY marca ORDER BY valor_total DESC`, params, (err, marcas) => {
-            relatorio.por_marca = marcas || [];
+        // Pipeline: Previsão de Caixa Global (Pré-vendas + App)
+        db.get("SELECT SUM(valor_total) as previsao_total FROM pre_vendas WHERE status = 'PENDENTE'", (err, prev) => {
+            relatorio.previsao_pipeline = prev ? prev.previsao_total : 0;
 
-            // 2. Vendas por Vendedor (Aplicando o filtro de data)
-            db.all(`SELECT vendedor_nome, SUM(quantidade) as qtd_total, SUM(valor_total) as valor_total FROM vendas ${filtro} GROUP BY vendedor_nome ORDER BY valor_total DESC`, params, (err, vendedores) => {
-                relatorio.por_vendedor = vendedores || [];
+            // 1. Vendas por Marca
+            db.all(`SELECT marca, SUM(quantidade) as qtd_total, SUM(valor_total) as valor_total FROM vendas ${filtro} GROUP BY marca ORDER BY valor_total DESC`, params, (err, marcas) => {
+                relatorio.por_marca = marcas || [];
 
-                // 3. Comparativo Mensal Global (Sempre mostra o histórico geral para ver o crescimento da empresa)
-                db.all('SELECT mes, SUM(valor_total) as total_mes FROM vendas GROUP BY mes ORDER BY mes DESC LIMIT 12', [], (err, meses) => {
-                    // Calculando Porcentagem de Crescimento/Queda entre o mês atual e o anterior
-                    if (meses && meses.length >= 2) {
-                        const atual = meses[0].total_mes;
-                        const anterior = meses[1].total_mes;
-                        const variacao = ((atual - anterior) / anterior) * 100;
-                        meses[0].comparativo = {
-                            mes_anterior: meses[1].mes,
-                            valor_anterior: anterior,
-                            porcentagem: variacao.toFixed(2) + '%'
-                        };
-                    }
-                    relatorio.por_mes = meses || [];
-                    
-                    res.json(relatorio);
+                // 2. Vendas por Vendedor (Comissões)
+                db.all(`SELECT vendedor_nome, SUM(quantidade) as qtd_total, SUM(valor_total) as valor_total FROM vendas ${filtro} GROUP BY vendedor_nome ORDER BY valor_total DESC`, params, (err, vendedores) => {
+                    relatorio.por_vendedor = vendedores || [];
+
+                    // 3. Comparativo Mensal
+                    db.all('SELECT mes, SUM(valor_total) as total_mes FROM vendas GROUP BY mes ORDER BY mes DESC LIMIT 12', [], (err, meses) => {
+                        if (meses && meses.length >= 2) {
+                            const atual = meses[0].total_mes;
+                            const anterior = meses[1].total_mes;
+                            const variacao = ((atual - anterior) / anterior) * 100;
+                            meses[0].comparativo = {
+                                mes_anterior: meses[1].mes,
+                                valor_anterior: anterior,
+                                porcentagem: variacao.toFixed(2) + '%'
+                            };
+                        }
+                        relatorio.por_mes = meses || [];
+                        
+                        res.json(relatorio);
+                    });
                 });
             });
         });
     });
 });
 
+// Rotas de Venda antigas
+app.post('/api/vendas', (req, res) => {
+    const { vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, origem } = req.body;
+    const local_baixa = origem === 'APP_REPRESENTANTE' ? `REP_${vendedor_id}` : 'LOJA';
+    const mes = new Date().toISOString().slice(0, 7); 
+
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        
+        db.run(`INSERT INTO vendas (vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, mes) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [vendedor_id, vendedor_nome, produto_codigo, marca, quantidade, valor_total, mes]);
+
+        db.run(`UPDATE estoque SET quantidade = quantidade - ? WHERE codigo = ? AND local = ?`, [quantidade, produto_codigo, local_baixa]);
+
+        db.run(`INSERT INTO movimentacoes (tipo, valor, descricao) VALUES ('ENTRADA', ?, ?)`, 
+                [valor_total, `Venda: ${quantidade}x ${marca} (${produto_codigo}) - Origem: ${origem || 'LOJA'}`]);
+
+        db.run('COMMIT', (err) => {
+            if (err) return res.status(500).json({ error: 'Erro ao processar venda' });
+            res.json({ success: true, message: 'Venda registrada com sucesso!' });
+        });
+    });
+});
+
 app.listen(PORT, () => {
-    console.log(`🚀 [BANE/NERO] Backend do RF Outlet V2 Rodando na Porta ${PORT} (SQLite Connected)`);
+    console.log(`🚀 [BANE/NERO] Backend do RF Outlet V0.1 (OMNICHANNEL) Rodando na Porta ${PORT}`);
 });

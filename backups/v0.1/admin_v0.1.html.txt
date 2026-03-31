@@ -25,6 +25,11 @@
         .p-datatable tr:hover td { background: #f8fafc; }
         .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
 
+        .p-paginator { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-width: 0 1px 1px 1px; padding: 0.5rem 1rem; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
+        .p-paginator-element { cursor: pointer; min-width: 2.286rem; height: 2.286rem; border-radius: 50%; border: 0 none; display: inline-flex; align-items: center; justify-content: center; color: #475569; transition: box-shadow 0.2s, background-color 0.2s, color 0.2s; }
+        .p-paginator-element:hover { background: #e2e8f0; }
+        .p-paginator-element.p-highlight { background: #eff6ff; color: #3b82f6; font-weight: 700; }
+
         .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
         
         #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -40,33 +45,58 @@
 
     <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
-            <span class="text-slate-800 text-xl font-bold tracking-tight text-blue-600">RF Outlet (v0.1)</span>
+            <div class="flex items-center">
+                <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-slate-500 hover:text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
         <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
             <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Painel Córtex (Vendas)
-            </button>
-            <button onclick="showSection('loja_pdv')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                PDV Loja & Ponto RH
-            </button>
-            <button onclick="showSection('representantes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Transferência p/ Representante
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Painel Principal (Vendas)
             </button>
             <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
-                Gestão de Produtos Global
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                Gestão de Produtos
             </button>
             <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Financeiro / Caixa
+            </button>
+            <button onclick="showSection('escala')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z"></path></svg>
+                Escala Mensal
+            </button>
+            <button onclick="showSection('redes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                Redes Sociais
             </button>
             <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase">Administração</div>
             <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 Gestão de Equipe (Vendedores)
+            </button>
+            <button onclick="showSection('lojas')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                Lojas e Franquias
+            </button>
+            <button onclick="showSection('aprovacoes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                Workflow & Aprovações
+            </button>
+            <button onclick="showSection('precificacao')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Precificação & Promoções
             </button>
         </nav>
 
         <div class="p-4 border-t border-slate-200">
             <div class="flex items-center gap-3 mb-4 p-2">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600" id="userInitials">X</div>
                 <div class="overflow-hidden">
                     <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
                     <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
@@ -80,23 +110,18 @@
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
-            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Córtex (Painel Global)</h2>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-500 hover:text-slate-700 bg-slate-100 rounded-md">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard (Vendas)</h2>
+            </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 space-y-6">
             
             <!-- DASHBOARD DE VENDAS -->
             <section id="section-dashboard" class="content-section">
-                
-                <!-- Pipeline (Previsão) - Novidade -->
-                <div class="p-card p-6 border-l-4 border-l-purple-500 mb-6 bg-purple-50">
-                    <span class="block text-purple-700 font-bold mb-1 text-sm uppercase tracking-widest">Pipeline (Previsão de Caixa)</span>
-                    <div class="text-3xl font-bold text-purple-900" id="previsaoPipeline">R$ 0,00</div>
-                    <div class="mt-2 text-sm text-purple-600">
-                        Soma de Pré-vendas da Loja + Pedidos de Representantes no App (Aguardando Pagamento/Faturamento).
-                    </div>
-                </div>
-
                 <!-- Filtros -->
                 <div class="p-card p-4 mb-6 flex flex-wrap gap-4 items-end bg-slate-50">
                     <div>
@@ -113,30 +138,33 @@
                     </div>
                 </div>
 
+                <!-- Comparativo Mensal (Crescimento) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="p-card p-6 border-l-4 border-l-blue-500">
-                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Efetivado do Mês</span>
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento do Mês Atual</span>
                         <div class="text-3xl font-bold text-slate-800" id="mesAtualValor">R$ 0,00</div>
                         <div class="mt-2 text-sm" id="mesAtualBadge">
                             <span class="text-slate-400">Calculando...</span>
                         </div>
                     </div>
                     <div class="p-card p-6 border-l-4 border-l-slate-400">
-                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento Mês Anterior</span>
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Mês Anterior</span>
                         <div class="text-3xl font-bold text-slate-500" id="mesAnteriorValor">R$ 0,00</div>
                     </div>
                 </div>
 
+                <!-- Tabelas Lado a Lado (Marcas e Vendedores) -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Ranking de Marcas -->
                     <div class="p-card">
                         <div class="p-datatable-header bg-indigo-50 text-indigo-800 border-indigo-100">
-                            <span>🏆 Ranking por Marca</span>
+                            <span>🏆 Ranking por Marca (Filtrado)</span>
                         </div>
                         <table class="p-datatable">
                             <thead>
                                 <tr>
                                     <th>Marca</th>
-                                    <th class="text-center">Peças</th>
+                                    <th class="text-center">Peças Vendidas</th>
                                     <th class="text-right">Faturamento</th>
                                 </tr>
                             </thead>
@@ -144,16 +172,17 @@
                         </table>
                     </div>
 
+                    <!-- Ranking de Vendedores -->
                     <div class="p-card">
                         <div class="p-datatable-header bg-emerald-50 text-emerald-800 border-emerald-100">
-                            <span>💼 Comissões (Vendedores / Representantes)</span>
+                            <span>💼 Ranking por Vendedor (Comissões)</span>
                         </div>
                         <table class="p-datatable">
                             <thead>
                                 <tr>
-                                    <th>Nome</th>
-                                    <th class="text-center">Peças</th>
-                                    <th class="text-right">Vendido</th>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Peças Vendidas</th>
+                                    <th class="text-right">Total Vendido</th>
                                 </tr>
                             </thead>
                             <tbody id="rankingVendedores"></tbody>
@@ -162,92 +191,11 @@
                 </div>
             </section>
 
-            <!-- REPRESENTANTES (TRANSFERÊNCIA DE ESTOQUE) -->
-            <section id="section-representantes" class="content-section hidden">
-                <div class="p-card p-6">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">🎒 Transferência de Mercadoria (Maleta Representante)</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Selecionar Representante</label>
-                            <select id="repSelect" class="p-inputtext w-full bg-white">
-                                <option value="">Carregando...</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Código do Produto (SKU)</label>
-                            <input type="text" id="repProdCodigo" class="p-inputtext w-full" placeholder="Ex: TXC-TSH-01">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Qtd para Transferir</label>
-                            <input type="number" id="repProdQtd" class="p-inputtext w-full" min="1" value="1">
-                        </div>
-                    </div>
-                    <button onclick="transferirParaRepresentante()" class="p-button bg-orange-500 hover:bg-orange-600 border-none w-full md:w-auto">Transferir da Loja para Maleta</button>
-                    
-                    <hr class="my-8 border-slate-200">
-
-                    <h4 class="text-lg font-bold text-slate-700 mb-4">Mercadoria em Posse do Representante</h4>
-                    <button onclick="loadEstoqueRep()" class="p-button p-button-outlined mb-4">Ver Estoque da Maleta</button>
-                    
-                    <table class="p-datatable">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Marca</th>
-                                <th>Tamanho</th>
-                                <th class="text-orange-600 font-bold">Qtd na Maleta</th>
-                                <th>Preço Venda</th>
-                            </tr>
-                        </thead>
-                        <tbody id="estoqueRepTable"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- PDV DA LOJA (RH e VENDAS) -->
-            <section id="section-loja_pdv" class="content-section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Ponto RH -->
-                    <div class="p-card p-6 border-t-4 border-t-blue-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">⏱️ Ponto Eletrônico (RH)</h3>
-                        <p class="text-sm text-slate-500 mb-6">Registre seu horário de entrada ou saída na loja.</p>
-                        
-                        <div class="flex gap-4">
-                            <button onclick="registrarPonto('ENTRADA')" class="p-button bg-green-500 hover:bg-green-600 w-full font-bold text-lg py-4">Bater ENTRADA</button>
-                            <button onclick="registrarPonto('SAIDA')" class="p-button bg-slate-500 hover:bg-slate-600 w-full font-bold text-lg py-4">Bater SAÍDA</button>
-                        </div>
-                    </div>
-
-                    <!-- PDV Simples -->
-                    <div class="p-card p-6 border-t-4 border-t-emerald-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">🛒 PDV Rápido (Loja Física)</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <input type="text" id="pdvCpf" class="p-inputtext w-full" placeholder="CPF do Cliente (Opcional)">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="pdvCodigo" class="p-inputtext w-full" placeholder="Código do Produto">
-                                <input type="number" id="pdvQtd" class="p-inputtext w-full" placeholder="Quantidade" value="1" min="1">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="number" id="pdvValor" class="p-inputtext w-full" placeholder="Valor Cobrado (R$)">
-                                <input type="number" id="pdvDesconto" class="p-inputtext w-full" placeholder="Desconto (R$ ou %)">
-                            </div>
-                            <div class="flex gap-2 pt-2">
-                                <button onclick="finalizarVendaLoja()" class="p-button bg-emerald-600 w-full">Finalizar Venda</button>
-                                <button onclick="gerarPreVenda()" class="p-button bg-purple-500 w-full">Gerar Pré-Venda</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- ESTOQUE SECTION -->
             <section id="section-estoque" class="content-section hidden">
                 <div class="p-card">
                     <div class="p-datatable-header">
-                        <span class="text-xl">Catálogo Global de Produtos (Estoque Matriz)</span>
+                        <span class="text-xl">Catálogo de Produtos</span>
                     </div>
                     <table class="p-datatable">
                         <thead>
@@ -255,7 +203,7 @@
                                 <th>Código</th>
                                 <th>Marca / Descrição</th>
                                 <th>Tamanho</th>
-                                <th>Estoque Local</th>
+                                <th>Estoque</th>
                                 <th>Preço (R$)</th>
                             </tr>
                         </thead>
@@ -284,32 +232,103 @@
                 </div>
             </section>
 
-            <!-- EQUIPE SECTION -->
-            <section id="section-equipe" class="content-section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="p-card p-6 col-span-1 border-t-4 border-t-blue-500">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">➕ Novo Vendedor/Representante</h3>
-                        <div class="space-y-4">
-                            <input type="text" id="novoNome" class="p-inputtext w-full" placeholder="Nome Completo">
-                            <input type="text" id="novoLogin" class="p-inputtext w-full" placeholder="Login">
-                            <input type="text" id="novaSenha" class="p-inputtext w-full" value="123456" placeholder="Senha">
-                            <select id="novoFuncao" class="p-inputtext w-full bg-white">
-                                <option value="Vendedora">Vendedor(a) de Loja</option>
-                                <option value="Representante Externo">Representante Externo</option>
-                            </select>
-                            <button onclick="cadastrarVendedor()" class="p-button w-full bg-blue-600">Cadastrar</button>
+            <!-- ESCALA SECTION -->
+            <section id="section-escala" class="content-section hidden">
+                <div class="p-card p-8">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4">Controle de Escala de Funcionários</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
+                        <p class="text-blue-700 text-sm font-bold">Módulo em Desenvolvimento</p>
+                        <p class="text-blue-600 text-xs mt-1">O calendário interativo PrimeNG Schedule será implementado na próxima versão.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REDES SOCIAIS SECTION -->
+            <section id="section-redes" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full min-h-[500px]">
+                    <div class="p-card flex flex-col h-full shadow-md">
+                        <div class="p-datatable-header flex justify-between items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white !border-0 !rounded-t-md">
+                            <span class="font-bold text-lg">Instagram</span>
+                        </div>
+                        <div class="p-6 flex-1 bg-slate-50 flex items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
+                            <div class="text-center">
+                                <h4 class="text-slate-600 font-bold mb-2">Conectar Conta</h4>
+                                <button class="p-button bg-pink-600 border-none">Vincular Instagram</button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- LOJAS E APROVACOES E PRECIFICACAO SECTION (MANTIDOS DA VERSAO ANTERIOR) -->
+            <section id="section-lojas" class="content-section hidden">
+                <div class="p-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-slate-800">Lojas e Franquias</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                            <h4 class="font-bold text-lg">RF Outlet - Matriz (SP)</h4>
+                            <span class="text-green-600 font-bold">Operando</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-aprovacoes" class="content-section hidden">
+                <div class="p-card p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Workflow de Aprovações Pendentes</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 border border-orange-200 bg-orange-50 rounded-lg">
+                            <p class="font-bold text-slate-800">Vendedora Maria solicita 20% de desconto.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-precificacao" class="content-section hidden">
+                <div class="p-card p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Precificação e Promoções</h3>
+                    <div class="border border-slate-200 rounded-lg p-6 text-center">
+                        <h4 class="text-lg font-bold text-slate-700">Nenhuma campanha ativa.</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EQUIPE SECTION (AGORA COM O CADASTRO DE VENDEDOR) -->
+            <section id="section-equipe" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Cadastro -->
+                    <div class="p-card p-6 col-span-1 border-t-4 border-t-blue-500">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4">➕ Novo Vendedor</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Nome Completo</label>
+                                <input type="text" id="novoNome" class="p-inputtext w-full" placeholder="Ex: Carlos Silva">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Login</label>
+                                <input type="text" id="novoLogin" class="p-inputtext w-full" placeholder="Ex: carlos">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Senha Padrão</label>
+                                <input type="text" id="novaSenha" class="p-inputtext w-full" value="123456">
+                            </div>
+                            <button onclick="cadastrarVendedor()" class="p-button w-full bg-blue-600">Salvar Vendedor</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista -->
                     <div class="p-card col-span-2">
                         <div class="p-datatable-header bg-slate-50">
-                            <span class="text-lg">Equipe Ativa</span>
+                            <span class="text-lg">Equipe de Vendas Ativa</span>
                         </div>
                         <table class="p-datatable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nome</th>
-                                    <th>Login</th>
+                                    <th>Login de Acesso</th>
                                     <th>Cargo</th>
                                 </tr>
                             </thead>
@@ -324,13 +343,34 @@
 
     <script>
         const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : (window.location.hostname.includes('vercel.app') ? 'https://rfoutlet.onrender.com' : '');
-        let currentUser = null;
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('hidden', '-translate-x-full');
+                sidebar.classList.add('flex', 'translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                setTimeout(() => {
+                    if (window.innerWidth < 1024) sidebar.classList.add('hidden');
+                }, 300);
+            }
+        }
 
         function showToast(title, detail, severity = 'success') {
             const container = document.getElementById('p-toast-container');
             const toast = document.createElement('div');
             toast.className = `p-toast-message ${severity}`;
-            toast.innerHTML = `<div><span class="block font-bold mb-1">${title}</span><span class="block text-sm">${detail}</span></div>`;
+            toast.innerHTML = `
+                <div>
+                    <span class="block font-bold mb-1">${title}</span>
+                    <span class="block text-sm">${detail}</span>
+                </div>
+            `;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 4000);
         }
@@ -338,9 +378,9 @@
         const userStr = localStorage.getItem('rfUser');
         if (!userStr) window.location.href = 'login.html';
         else {
-            currentUser = JSON.parse(userStr);
-            document.getElementById('userName').innerText = currentUser.nome;
-            document.getElementById('userRole').innerText = currentUser.funcao;
+            const user = JSON.parse(userStr);
+            document.getElementById('userName').innerText = user.nome;
+            document.getElementById('userRole').innerText = user.funcao;
         }
 
         function logout() {
@@ -352,18 +392,13 @@
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById('section-' + name).classList.remove('hidden');
             
-            const titles = { 
-                'dashboard': 'Córtex (Painel Global)', 
-                'estoque': 'Estoque Matriz (Loja)', 
-                'caixa': 'Financeiro', 
-                'equipe': 'Gestão de Vendedores',
-                'representantes': 'Maleta do Representante',
-                'loja_pdv': 'PDV & RH'
-            };
+            const titles = { 'dashboard': 'Dashboard (Vendas)', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'escala': 'Escala Mensal', 'redes': 'Redes Sociais', 'equipe': 'Gestão de Vendedores', 'lojas': 'Lojas e Franquias', 'aprovacoes': 'Aprovações', 'precificacao': 'Precificação' };
             document.getElementById('pageTitle').innerText = titles[name];
             
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
             event.currentTarget.classList.add('nav-btn-active');
+            
+            if (window.innerWidth < 1024) toggleMobileMenu();
         }
 
         function limparFiltros() {
@@ -384,11 +419,9 @@
                 const res = await fetch(url);
                 const relatorio = await res.json();
 
-                // Pipeline
-                document.getElementById('previsaoPipeline').innerText = formatMoney(relatorio.previsao_pipeline);
-
                 const tbodyMarcas = document.getElementById('rankingMarcas');
                 tbodyMarcas.innerHTML = '';
+                if(relatorio.por_marca.length === 0) tbodyMarcas.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
                 relatorio.por_marca.forEach(m => {
                     tbodyMarcas.innerHTML += `<tr>
                         <td class="font-bold text-slate-700">${m.marca}</td>
@@ -399,6 +432,7 @@
 
                 const tbodyVends = document.getElementById('rankingVendedores');
                 tbodyVends.innerHTML = '';
+                if(relatorio.por_vendedor.length === 0) tbodyVends.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
                 relatorio.por_vendedor.forEach(v => {
                     tbodyVends.innerHTML += `<tr>
                         <td class="font-bold text-slate-700">${v.vendedor_nome}</td>
@@ -411,36 +445,31 @@
                     const mesAtual = relatorio.por_mes[0];
                     document.getElementById('mesAtualValor').innerText = formatMoney(mesAtual.total_mes);
                     if(mesAtual.comparativo) {
-                        document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior);
+                        document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior) + ` (${mesAtual.comparativo.mes_anterior})`;
                         let badgeColor = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
-                        document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${mesAtual.comparativo.porcentagem} vs. mês anterior</span>`;
+                        let sinal = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? '+' : '';
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${sinal}${mesAtual.comparativo.porcentagem} em relação ao mês passado</span>`;
+                    } else {
+                        document.getElementById('mesAnteriorValor').innerText = 'R$ 0,00';
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="text-slate-500">Sem dados para comparar.</span>`;
                     }
                 }
-            } catch (e) {}
+            } catch (e) { console.error("Erro Relatorios", e); }
         }
 
         async function loadVendedores() {
             try {
                 const res = await fetch(`${API_BASE}/api/vendedores`);
                 const equipe = await res.json();
-                
                 const tbody = document.getElementById('equipeTable');
-                const repSelect = document.getElementById('repSelect');
-                
                 tbody.innerHTML = '';
-                repSelect.innerHTML = '<option value="">Selecione...</option>';
-
                 equipe.forEach(v => {
                     tbody.innerHTML += `<tr>
                         <td>#${v.id}</td>
-                        <td class="font-bold">${v.nome}</td>
+                        <td class="font-bold text-slate-800">${v.nome}</td>
                         <td>${v.login}</td>
                         <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${v.funcao}</span></td>
                     </tr>`;
-
-                    if(v.funcao.includes('Representante')) {
-                        repSelect.innerHTML += `<option value="${v.id}">${v.nome}</option>`;
-                    }
                 });
             } catch (e) {}
         }
@@ -449,94 +478,26 @@
             const nome = document.getElementById('novoNome').value;
             const login = document.getElementById('novoLogin').value;
             const senha = document.getElementById('novaSenha').value;
-            const funcao = document.getElementById('novoFuncao').value;
-
             if(!nome || !login || !senha) return showToast('Erro', 'Preencha todos os campos.', 'error');
             try {
                 const res = await fetch(`${API_BASE}/api/usuarios`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ nome, login, senha, funcao })
+                    body: JSON.stringify({ nome, login, senha, funcao: 'Vendedor' })
                 });
                 const data = await res.json();
                 if(data.success) {
-                    showToast('Sucesso', 'Vendedor/Representante cadastrado!');
+                    showToast('Sucesso', 'Vendedor cadastrado!');
+                    document.getElementById('novoNome').value = '';
+                    document.getElementById('novoLogin').value = '';
                     loadVendedores();
                 } else showToast('Erro', data.error, 'error');
             } catch (e) {}
         }
 
-        // PONTO RH
-        async function registrarPonto(tipo) {
-            try {
-                const res = await fetch(`${API_BASE}/api/ponto`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ usuario_id: currentUser.id, usuario_nome: currentUser.nome, tipo })
-                });
-                const data = await res.json();
-                if(data.success) showToast('Ponto Registrado', `Seu ponto de ${tipo} foi gravado.`, 'success');
-            } catch (e) { showToast('Erro', 'Falha ao bater o ponto.', 'error'); }
-        }
-
-        // TRANSFERENCIA DE MALETA
-        async function transferirParaRepresentante() {
-            const representante_id = document.getElementById('repSelect').value;
-            const codigo = document.getElementById('repProdCodigo').value;
-            const quantidade_transferir = document.getElementById('repProdQtd').value;
-
-            if(!representante_id || !codigo || !quantidade_transferir) return showToast('Erro', 'Preencha todos os campos da maleta', 'error');
-
-            try {
-                const res = await fetch(`${API_BASE}/api/estoque/transferir`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ representante_id, codigo, quantidade_transferir })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    showToast('Transferência Concluída', data.message, 'success');
-                    loadOutros(); // recarrega o estoque principal
-                } else showToast('Erro', data.error, 'error');
-            } catch (e) {}
-        }
-
-        async function loadEstoqueRep() {
-            const representante_id = document.getElementById('repSelect').value;
-            if(!representante_id) return showToast('Aviso', 'Selecione um Representante primeiro.', 'error');
-
-            try {
-                const res = await fetch(`${API_BASE}/api/estoque?local=REP_${representante_id}`);
-                const estoque = await res.json();
-                const tbody = document.getElementById('estoqueRepTable');
-                tbody.innerHTML = '';
-                
-                if(estoque.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4">A maleta deste representante está vazia.</td></tr>';
-
-                estoque.forEach(item => {
-                    tbody.innerHTML += `<tr>
-                        <td class="font-bold">${item.codigo}</td>
-                        <td>${item.marca}</td>
-                        <td>${item.tamanho}</td>
-                        <td class="text-orange-600 font-bold">${item.quantidade} un</td>
-                        <td>R$ ${item.preco.toFixed(2)}</td>
-                    </tr>`;
-                });
-            } catch (e) {}
-        }
-
-        // SIMULACAO DE VENDAS E PRE-VENDA (PDV RÁPIDO)
-        function finalizarVendaLoja() {
-            showToast('PDV Simples', 'Integração de venda direta e geração de nota conectada com a v0.2 em breve. Use o sistema original para emitir notas por enquanto.', 'success');
-        }
-        function gerarPreVenda() {
-            showToast('Pipeline Atualizado', 'Pré-venda de R$ 800,00 enviada para a fila (Pipeline).', 'success');
-        }
-
         async function loadOutros() {
             try {
-                // Estoque só da loja
-                const resEst = await fetch(`${API_BASE}/api/estoque?local=LOJA`);
+                const resEst = await fetch(`${API_BASE}/api/estoque`);
                 const estoque = await resEst.json();
                 const tableBody = document.getElementById('estoqueTable');
                 tableBody.innerHTML = '';
@@ -545,8 +506,8 @@
                         <td class="font-semibold">${item.codigo}</td>
                         <td><div class="font-bold">${item.marca}</div><div class="text-xs text-slate-500">${item.categoria}</div></td>
                         <td>${item.tamanho}</td>
-                        <td class="font-bold">${item.quantidade}</td>
-                        <td>R$ ${item.preco.toFixed(2)}</td>
+                        <td>${item.quantidade}</td>
+                        <td class="font-bold">R$ ${item.preco.toFixed(2)}</td>
                     </tr>`;
                 });
 
