@@ -11,222 +11,154 @@
         
         /* Estilo Corporativo PrimeNG (Simulação com Tailwind) */
         .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 6px; }
-        .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; items-center; outline: none; border: 1px solid transparent; }
+        .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; outline: none; border: 1px solid transparent; }
         .p-button:hover { background-color: #2563eb; }
-        .p-button:focus { box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #93c5fd; }
         .p-button-outlined { background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
         .p-button-outlined:hover { background-color: #eff6ff; }
         
-        .p-inputtext { font-family: inherit; font-size: 1rem; color: #334155; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; appearance: none; border-radius: 6px; outline: none; }
-        .p-inputtext:hover { border-color: #94a3b8; }
+        .p-inputtext { font-family: inherit; font-size: 0.875rem; color: #334155; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; }
         .p-inputtext:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
 
         .p-datatable { border-collapse: collapse; width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
-        .p-datatable th { padding: 1rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; font-weight: 600; color: #334155; background: #f8fafc; text-align: left; transition: box-shadow 0.2s; }
-        .p-datatable th:hover { background: #f1f5f9; cursor: pointer; }
-        .p-datatable td { padding: 1rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; color: #475569; }
+        .p-datatable th { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; font-weight: 600; color: #334155; background: #f8fafc; text-align: left; }
+        .p-datatable td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-width: 0 0 1px 0; color: #475569; }
         .p-datatable tr:hover td { background: #f8fafc; }
         .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
 
-        .p-paginator { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-width: 0 1px 1px 1px; padding: 0.5rem 1rem; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
-        .p-paginator-element { cursor: pointer; min-width: 2.286rem; height: 2.286rem; border-radius: 50%; border: 0 none; display: inline-flex; align-items: center; justify-content: center; color: #475569; transition: box-shadow 0.2s, background-color 0.2s, color 0.2s; }
-        .p-paginator-element:hover { background: #e2e8f0; }
-        .p-paginator-element.p-highlight { background: #eff6ff; color: #3b82f6; font-weight: 700; }
-
+        .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
+        
         /* Toast Container */
         #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
-        .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
+        .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
         .p-toast-message.success { border-left-color: #22c55e; }
-        .p-toast-message.success .toast-icon { color: #22c55e; }
+        .p-toast-message.error { border-left-color: #ef4444; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden">
 
-    <!-- Container de Toasts (Notificações estilo PrimeNG) -->
     <div id="p-toast-container"></div>
 
-    <!-- Sidebar Estilo PrimeNG (Menu Lateral Branco/Cinza) -->
     <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
-            <div class="flex items-center">
-                <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
-            </div>
-            <!-- Botão fechar no mobile -->
-            <button onclick="toggleMobileMenu()" class="lg:hidden text-slate-500 hover:text-slate-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <span class="text-slate-800 text-xl font-bold tracking-tight text-blue-600">RF Outlet</span>
         </div>
 
         <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
-            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                Painel Principal
-            </button>
-            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                Gestão de Produtos
-            </button>
-            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Financeiro
-            </button>
-            <button onclick="showSection('escala')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z"></path></svg>
-                Escala Mensal
-            </button>
-            <button onclick="showSection('redes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                Redes Sociais
-            </button>
-            <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Administração</div>
-            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                Gestão de Equipe (ACL)
-            </button>
-            <button onclick="showSection('lojas')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                Lojas e Franquias
-            </button>
-            <button onclick="showSection('aprovacoes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                Workflow & Aprovações
-            </button>
-            <button onclick="showSection('precificacao')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 transition-all text-slate-600 hover:bg-slate-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Precificação & Promoções
-            </button>
+            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Painel Principal (Vendas)</button>
+            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Gestão de Produtos</button>
+            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Financeiro / Caixa</button>
+            <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase">Administração</div>
+            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Gestão de Equipe (Vendedores)</button>
         </nav>
 
         <div class="p-4 border-t border-slate-200">
             <div class="flex items-center gap-3 mb-4 p-2">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600" id="userInitials">X</div>
                 <div class="overflow-hidden">
                     <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
                     <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
                 </div>
             </div>
-            <button onclick="logout()" class="p-button p-button-outlined w-full text-sm">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Desconectar
-            </button>
+            <button onclick="logout()" class="p-button p-button-outlined w-full text-sm">Desconectar</button>
         </div>
     </aside>
 
-    <!-- Overlay Fundo Escuro para Menu Mobile -->
-    <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-10 hidden lg:hidden"></div>
-
-    <!-- Main Content -->
     <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
-        
-        <!-- Topbar PrimeNG Style -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
-            <div class="flex items-center gap-3">
-                <!-- Hamburger Menu Button -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-500 hover:text-slate-700 bg-slate-100 rounded-md">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-                <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard</h2>
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="relative flex h-3 w-3">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                </span>
-                <button onclick="showToast('Sistema Sincronizado', 'Todos os dados estão atualizados na nuvem Integra.', 'success')" class="text-slate-500 hover:text-slate-700 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                </button>
-            </div>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sticky top-0 z-10 shadow-sm w-full">
+            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard (Vendas)</h2>
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 space-y-6">
             
-            <!-- DASHBOARD SECTION -->
+            <!-- DASHBOARD DE VENDAS -->
             <section id="section-dashboard" class="content-section">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-card p-6 border-l-4 border-l-blue-500">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="block text-slate-500 font-medium mb-1">Faturamento (Hoje)</span>
-                                <div class="text-2xl font-bold text-slate-800" id="caixaTotal">R$ 0,00</div>
-                            </div>
-                            <div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-md flex items-center justify-center">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                        </div>
-                        <span class="text-green-500 font-medium text-sm">+12% </span><span class="text-slate-500 text-sm">desde o último mês</span>
+                <!-- Filtros -->
+                <div class="p-card p-4 mb-6 flex flex-wrap gap-4 items-end bg-slate-50">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Início</label>
+                        <input type="date" id="filtroInicio" class="p-inputtext">
                     </div>
-                    
-                    <div class="p-card p-6 border-l-4 border-l-orange-500">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="block text-slate-500 font-medium mb-1">Volume de Estoque</span>
-                                <div class="text-2xl font-bold text-slate-800" id="totalEstoque">...</div>
-                            </div>
-                            <div class="w-10 h-10 bg-orange-100 text-orange-500 rounded-md flex items-center justify-center">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                            </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Data Fim</label>
+                        <input type="date" id="filtroFim" class="p-inputtext">
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="loadRelatorios()" class="p-button bg-blue-600">Filtrar Relatório</button>
+                        <button onclick="limparFiltros()" class="p-button p-button-outlined bg-white text-slate-600 border-slate-300">Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Comparativo Mensal (Crescimento) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="p-card p-6 border-l-4 border-l-blue-500">
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Faturamento do Mês Atual</span>
+                        <div class="text-3xl font-bold text-slate-800" id="mesAtualValor">R$ 0,00</div>
+                        <div class="mt-2 text-sm" id="mesAtualBadge">
+                            <span class="text-slate-400">Calculando...</span>
                         </div>
-                        <span class="text-orange-500 font-medium text-sm">Atualizado </span><span class="text-slate-500 text-sm">agora há pouco</span>
+                    </div>
+                    <div class="p-card p-6 border-l-4 border-l-slate-400">
+                        <span class="block text-slate-500 font-medium mb-1 text-sm">Mês Anterior</span>
+                        <div class="text-3xl font-bold text-slate-500" id="mesAnteriorValor">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <!-- Tabelas Lado a Lado (Marcas e Vendedores) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Ranking de Marcas -->
+                    <div class="p-card">
+                        <div class="p-datatable-header bg-indigo-50 text-indigo-800 border-indigo-100">
+                            <span>🏆 Ranking por Marca (Filtrado)</span>
+                        </div>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Marca</th>
+                                    <th class="text-center">Peças Vendidas</th>
+                                    <th class="text-right">Faturamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingMarcas"></tbody>
+                        </table>
                     </div>
 
-                    <div class="p-card p-6 border-l-4 border-l-green-500">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="block text-slate-500 font-medium mb-1">Colaboradores Ativos</span>
-                                <div class="text-2xl font-bold text-slate-800">3 Registros</div>
-                            </div>
-                            <div class="w-10 h-10 bg-green-100 text-green-500 rounded-md flex items-center justify-center">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            </div>
+                    <!-- Ranking de Vendedores -->
+                    <div class="p-card">
+                        <div class="p-datatable-header bg-emerald-50 text-emerald-800 border-emerald-100">
+                            <span>💼 Ranking por Vendedor (Comissões)</span>
                         </div>
-                        <span class="text-green-500 font-medium text-sm">Escala Normal </span><span class="text-slate-500 text-sm">hoje</span>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Peças Vendidas</th>
+                                    <th class="text-right">Total Vendido</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingVendedores"></tbody>
+                        </table>
                     </div>
                 </div>
             </section>
 
-            <!-- ESTOQUE SECTION (PrimeNG DataTable Style) -->
+            <!-- ESTOQUE SECTION -->
             <section id="section-estoque" class="content-section hidden">
                 <div class="p-card">
                     <div class="p-datatable-header">
                         <span class="text-xl">Catálogo de Produtos</span>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            </span>
-                            <input type="text" class="p-inputtext pl-9 w-64" placeholder="Buscar por palavra-chave...">
-                        </div>
                     </div>
                     <table class="p-datatable">
                         <thead>
                             <tr>
-                                <th>Código (SKU) <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
-                                <th>Marca / Descrição <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
+                                <th>Código</th>
+                                <th>Marca / Descrição</th>
                                 <th>Tamanho</th>
                                 <th>Estoque</th>
-                                <th>Preço (R$) <svg class="w-4 h-4 inline text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></th>
-                                <th class="text-center">Ações</th>
+                                <th>Preço (R$)</th>
                             </tr>
                         </thead>
                         <tbody id="estoqueTable"></tbody>
                     </table>
-                    <div class="p-paginator">
-                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg></button>
-                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                        <button class="p-paginator-element p-highlight">1</button>
-                        <button class="p-paginator-element">2</button>
-                        <button class="p-paginator-element">3</button>
-                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                        <button class="p-paginator-element"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg></button>
-                    </div>
-                </div>
-                <div class="mt-4 flex justify-end">
-                    <button class="p-button" onclick="showToast('Aviso', 'Módulo de cadastro em desenvolvimento pelo Gerente Nero.', 'success')">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Novo Produto
-                    </button>
                 </div>
             </section>
 
@@ -235,10 +167,6 @@
                 <div class="p-card">
                     <div class="p-datatable-header">
                         <span class="text-xl">Movimentação Diária de Caixa</span>
-                        <button class="p-button p-button-outlined bg-white">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            Exportar CSV
-                        </button>
                     </div>
                     <table class="p-datatable">
                         <thead>
@@ -251,175 +179,48 @@
                         </thead>
                         <tbody id="caixaTable"></tbody>
                     </table>
-                    <div class="p-paginator">
-                        <span class="text-sm text-slate-500">Mostrando 1 a 10 de 50 registros</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ESCALA SECTION -->
-            <section id="section-escala" class="content-section hidden">
-                <div class="p-card p-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4">Controle de Escala de Funcionários</h3>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
-                        <p class="text-blue-700 text-sm font-bold">Módulo em Desenvolvimento</p>
-                        <p class="text-blue-600 text-xs mt-1">O calendário interativo PrimeNG Schedule (FullCalendar) será implementado na próxima versão pelo Gerente Geral Nero.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- REDES SOCIAIS SECTION -->
-            <section id="section-redes" class="content-section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full min-h-[500px]">
-                    <!-- Instagram Widget -->
-                    <div class="p-card flex flex-col h-full shadow-md">
-                        <div class="p-datatable-header flex justify-between items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white !border-0 !rounded-t-md">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                                <span class="font-bold text-lg">Instagram</span>
-                            </div>
-                            <button onclick="showToast('Sincronizando', 'Buscando novas postagens...', 'success')" class="text-white hover:text-pink-200 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            </button>
-                        </div>
-                        <div class="p-6 flex-1 bg-slate-50 flex flex-col items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
-                            <div class="w-full h-full border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-8 bg-white text-center">
-                                <svg class="w-12 h-12 text-slate-300 mb-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                                <h4 class="text-slate-600 font-bold mb-2">Conectar Conta do Instagram</h4>
-                                <p class="text-sm text-slate-400 mb-6">Integre com a API do Meta para exibir o feed e interações diretamente aqui.</p>
-                                <button class="p-button bg-pink-600 hover:bg-pink-700 border-none shadow-lg">Vincular Instagram da Loja</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Outra Rede (TikTok / Facebook) Widget -->
-                    <div class="p-card flex flex-col h-full shadow-md">
-                        <div class="p-datatable-header flex justify-between items-center bg-blue-600 text-white !border-0 !rounded-t-md">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                                <span class="font-bold text-lg">Facebook / Outras</span>
-                            </div>
-                            <button onclick="showToast('Sincronizando', 'Buscando novas postagens...', 'success')" class="text-white hover:text-blue-200 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            </button>
-                        </div>
-                        <div class="p-6 flex-1 bg-slate-50 flex flex-col items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
-                            <div class="w-full h-full border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-8 bg-white text-center">
-                                <svg class="w-12 h-12 text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                                <h4 class="text-slate-600 font-bold mb-2">Conectar Rede Secundária</h4>
-                                <p class="text-sm text-slate-400 mb-6">Monitore métricas e engajamento da sua outra rede principal.</p>
-                                <button class="p-button bg-blue-600 hover:bg-blue-700 border-none shadow-lg">Vincular Segunda Conta</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             <!-- EQUIPE SECTION -->
             <section id="section-equipe" class="content-section hidden">
-                <div class="p-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-slate-800">Gestão de Equipe e Permissões</h3>
-                        <button class="p-button"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Novo Funcionário</button>
-                    </div>
-                    <table class="p-datatable">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Cargo</th>
-                                <th>Loja / Filial</th>
-                                <th>Nível de Acesso</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-semibold">Felipe Correa</td>
-                                <td>CEO</td>
-                                <td>Matriz SP</td>
-                                <td><span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">Acesso Total</span></td>
-                                <td><button class="text-blue-500 hover:text-blue-700">Editar</button></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold">Maria Silva</td>
-                                <td>Vendedora</td>
-                                <td>Filial RJ</td>
-                                <td><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-bold">Apenas Vendas</span></td>
-                                <td><button class="text-blue-500 hover:text-blue-700">Editar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- LOJAS SECTION -->
-            <section id="section-lojas" class="content-section hidden">
-                <div class="p-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-slate-800">Lojas e Franquias</h3>
-                        <button class="p-button bg-green-600 border-none hover:bg-green-700"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Cadastrar Nova Loja</button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
-                            <h4 class="font-bold text-lg">RF Outlet - Matriz (SP)</h4>
-                            <p class="text-sm text-slate-500 mb-4">CNPJ: 00.000.000/0001-00</p>
-                            <div class="flex justify-between text-sm">
-                                <span>Estoque Local: <strong>4.520 peças</strong></span>
-                                <span class="text-green-600 font-bold">Operando</span>
-                            </div>
-                        </div>
-                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
-                            <h4 class="font-bold text-lg">RF Outlet - Filial (RJ)</h4>
-                            <p class="text-sm text-slate-500 mb-4">CNPJ: 00.000.000/0002-00</p>
-                            <div class="flex justify-between text-sm">
-                                <span>Estoque Local: <strong>1.200 peças</strong></span>
-                                <span class="text-green-600 font-bold">Operando</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- APROVAÇÕES SECTION -->
-            <section id="section-aprovacoes" class="content-section hidden">
-                <div class="p-card p-6">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">Workflow de Aprovações Pendentes</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 border border-orange-200 bg-orange-50 rounded-lg">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Cadastro -->
+                    <div class="p-card p-6 col-span-1 border-t-4 border-t-blue-500">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4">➕ Novo Vendedor</h3>
+                        <div class="space-y-4">
                             <div>
-                                <span class="text-xs font-bold text-orange-600 uppercase tracking-widest">Solicitação de Desconto</span>
-                                <p class="font-bold text-slate-800">Vendedora Maria solicita 20% de desconto no item DAM-JNS-01.</p>
-                                <p class="text-sm text-slate-500">Motivo: Cliente finalizando compra de 5 peças.</p>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Nome Completo</label>
+                                <input type="text" id="novoNome" class="p-inputtext w-full" placeholder="Ex: Carlos Silva">
                             </div>
-                            <div class="flex gap-2">
-                                <button class="p-button bg-green-500 border-none hover:bg-green-600 text-sm">Aprovar</button>
-                                <button class="p-button bg-red-500 border-none hover:bg-red-600 text-sm">Negar</button>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border border-blue-200 bg-blue-50 rounded-lg">
                             <div>
-                                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">Novo Produto</span>
-                                <p class="font-bold text-slate-800">Estoquista Márcio solicita cadastro de 15 novas Camisetas Polo.</p>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Login</label>
+                                <input type="text" id="novoLogin" class="p-inputtext w-full" placeholder="Ex: carlos">
                             </div>
-                            <div class="flex gap-2">
-                                <button class="p-button bg-green-500 border-none hover:bg-green-600 text-sm">Aprovar Cadastro</button>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Senha Padrão</label>
+                                <input type="text" id="novaSenha" class="p-inputtext w-full" value="123456">
                             </div>
+                            <button onclick="cadastrarVendedor()" class="p-button w-full bg-blue-600">Salvar Vendedor</button>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- PRECIFICACAO SECTION -->
-            <section id="section-precificacao" class="content-section hidden">
-                <div class="p-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-slate-800">Precificação em Massa e Promoções</h3>
-                        <button class="p-button bg-purple-600 border-none hover:bg-purple-700">Criar Nova Campanha</button>
-                    </div>
-                    <div class="border border-slate-200 rounded-lg p-6 text-center">
-                        <svg class="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <h4 class="text-lg font-bold text-slate-700">Nenhuma campanha de desconto ativa.</h4>
-                        <p class="text-slate-500 text-sm mt-2">Crie regras automatizadas (Ex: Black Friday 30% off em todo o estoque) que refletirão automaticamente no PDV de todas as filiais.</p>
+                    <!-- Lista -->
+                    <div class="p-card col-span-2">
+                        <div class="p-datatable-header bg-slate-50">
+                            <span class="text-lg">Equipe de Vendas Ativa</span>
+                        </div>
+                        <table class="p-datatable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Login de Acesso</th>
+                                    <th>Cargo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="equipeTable"></tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -427,61 +228,29 @@
         </main>
     </div>
 
-    <!-- Scripts de Simulação PrimeNG e Dados -->
     <script>
         const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : (window.location.hostname.includes('vercel.app') ? 'https://rfoutlet.onrender.com' : '');
-        // Menu Mobile (Responsivo)
-        function toggleMobileMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobileOverlay');
-            
-            if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
-                // Abrir
-                sidebar.classList.remove('hidden', '-translate-x-full');
-                sidebar.classList.add('flex', 'translate-x-0');
-                overlay.classList.remove('hidden');
-            } else {
-                // Fechar
-                sidebar.classList.remove('translate-x-0');
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                setTimeout(() => {
-                    if (window.innerWidth < 1024) sidebar.classList.add('hidden');
-                }, 300); // aguarda animação
-            }
-        }
 
-        // Função para mostrar Toasts estilo PrimeNG
         function showToast(title, detail, severity = 'success') {
             const container = document.getElementById('p-toast-container');
             const toast = document.createElement('div');
             toast.className = `p-toast-message ${severity}`;
-            
-            let iconSvg = '<svg class="w-6 h-6 toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-            
             toast.innerHTML = `
-                ${iconSvg}
                 <div>
-                    <span class="block font-bold text-slate-800 mb-1">${title}</span>
-                    <span class="block text-sm text-slate-600">${detail}</span>
+                    <span class="block font-bold mb-1">${title}</span>
+                    <span class="block text-sm">${detail}</span>
                 </div>
-                <button onclick="this.parentElement.remove()" class="ml-auto text-slate-400 hover:text-slate-600">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
             `;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 4000);
         }
 
-        // Autenticação e Navegação
         const userStr = localStorage.getItem('rfUser');
-        if (!userStr) {
-            window.location.href = 'login.html';
-        } else {
+        if (!userStr) window.location.href = 'login.html';
+        else {
             const user = JSON.parse(userStr);
             document.getElementById('userName').innerText = user.nome;
             document.getElementById('userRole').innerText = user.funcao;
-            document.getElementById('userInitials').innerText = user.nome.charAt(0).toUpperCase();
         }
 
         function logout() {
@@ -493,84 +262,157 @@
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById('section-' + name).classList.remove('hidden');
             
-            const titles = { 'dashboard': 'Dashboard', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'escala': 'Escala Mensal', 'redes': 'Gestão de Redes Sociais', 'equipe': 'Gestão de Equipe (ACL)', 'lojas': 'Lojas e Franquias', 'aprovacoes': 'Workflow & Aprovações', 'precificacao': 'Precificação & Promoções' };
+            const titles = { 'dashboard': 'Dashboard (Vendas)', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'equipe': 'Gestão de Vendedores' };
             document.getElementById('pageTitle').innerText = titles[name];
             
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('nav-btn-active');
-            });
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
             event.currentTarget.classList.add('nav-btn-active');
+        }
 
-            // Fechar menu mobile automaticamente ao clicar em uma opção
-            if (window.innerWidth < 1024) {
-                toggleMobileMenu();
+        function limparFiltros() {
+            document.getElementById('filtroInicio').value = '';
+            document.getElementById('filtroFim').value = '';
+            loadRelatorios();
+        }
+
+        const formatMoney = (val) => "R$ " + (val || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+        async function loadRelatorios() {
+            try {
+                const dataInicio = document.getElementById('filtroInicio').value;
+                const dataFim = document.getElementById('filtroFim').value;
+                let url = `${API_BASE}/api/relatorios/vendas`;
+                if(dataInicio && dataFim) {
+                    url += `?data_inicio=${dataInicio}&data_fim=${dataFim}`;
+                }
+
+                const res = await fetch(url);
+                const relatorio = await res.json();
+
+                // Preencher Ranking de Marcas
+                const tbodyMarcas = document.getElementById('rankingMarcas');
+                tbodyMarcas.innerHTML = '';
+                if(relatorio.por_marca.length === 0) tbodyMarcas.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
+                relatorio.por_marca.forEach(m => {
+                    tbodyMarcas.innerHTML += `<tr>
+                        <td class="font-bold text-slate-700">${m.marca}</td>
+                        <td class="text-center">${m.qtd_total} un</td>
+                        <td class="text-right text-indigo-600 font-bold">${formatMoney(m.valor_total)}</td>
+                    </tr>`;
+                });
+
+                // Preencher Ranking de Vendedores
+                const tbodyVends = document.getElementById('rankingVendedores');
+                tbodyVends.innerHTML = '';
+                if(relatorio.por_vendedor.length === 0) tbodyVends.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
+                relatorio.por_vendedor.forEach(v => {
+                    tbodyVends.innerHTML += `<tr>
+                        <td class="font-bold text-slate-700">${v.vendedor_nome}</td>
+                        <td class="text-center">${v.qtd_total} un</td>
+                        <td class="text-right text-emerald-600 font-bold">${formatMoney(v.valor_total)}</td>
+                    </tr>`;
+                });
+
+                // Preencher Comparativo Mensal (Sempre mostra)
+                if(relatorio.por_mes && relatorio.por_mes.length > 0) {
+                    const mesAtual = relatorio.por_mes[0];
+                    document.getElementById('mesAtualValor').innerText = formatMoney(mesAtual.total_mes);
+                    
+                    if(mesAtual.comparativo) {
+                        document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior) + ` (${mesAtual.comparativo.mes_anterior})`;
+                        let badgeColor = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                        let sinal = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? '+' : '';
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${sinal}${mesAtual.comparativo.porcentagem} em relação ao mês passado</span>`;
+                    } else {
+                        document.getElementById('mesAnteriorValor').innerText = 'R$ 0,00';
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="text-slate-500">Sem dados do mês anterior para comparar.</span>`;
+                    }
+                }
+            } catch (e) {
+                console.error("Erro Relatorios", e);
             }
         }
 
-        async function loadData() {
+        async function loadVendedores() {
             try {
-                // Carregar Estoque
+                const res = await fetch(`${API_BASE}/api/vendedores`);
+                const equipe = await res.json();
+                const tbody = document.getElementById('equipeTable');
+                tbody.innerHTML = '';
+                equipe.forEach(v => {
+                    tbody.innerHTML += `<tr>
+                        <td>#${v.id}</td>
+                        <td class="font-bold text-slate-800">${v.nome}</td>
+                        <td>${v.login}</td>
+                        <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${v.funcao}</span></td>
+                    </tr>`;
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        async function cadastrarVendedor() {
+            const nome = document.getElementById('novoNome').value;
+            const login = document.getElementById('novoLogin').value;
+            const senha = document.getElementById('novaSenha').value;
+
+            if(!nome || !login || !senha) return showToast('Erro', 'Preencha todos os campos.', 'error');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/usuarios`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nome, login, senha, funcao: 'Vendedor' })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    showToast('Sucesso', 'Vendedor cadastrado com sucesso!');
+                    document.getElementById('novoNome').value = '';
+                    document.getElementById('novoLogin').value = '';
+                    loadVendedores();
+                } else {
+                    showToast('Erro', data.error, 'error');
+                }
+            } catch (e) { showToast('Erro', 'Erro na conexão.', 'error'); }
+        }
+
+        async function loadOutros() {
+            try {
                 const resEst = await fetch(`${API_BASE}/api/estoque`);
                 const estoque = await resEst.json();
                 const tableBody = document.getElementById('estoqueTable');
                 tableBody.innerHTML = '';
-                let totalItems = 0;
                 estoque.forEach(item => {
-                    totalItems += item.quantidade;
-                    
-                    // Badge PrimeNG Style
-                    let badgeClass = item.quantidade > 10 ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
-                    let badgeStatus = item.quantidade > 10 ? 'EM ESTOQUE' : 'BAIXO ESTOQUE';
-
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td class="font-semibold">${item.codigo}</td>
-                            <td>
-                                <div class="font-bold text-slate-800">${item.marca}</div>
-                                <div class="text-xs text-slate-500">${item.categoria}</div>
-                            </td>
-                            <td>${item.tamanho}</td>
-                            <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${badgeStatus} (${item.quantidade})</span></td>
-                            <td class="font-bold">R$ ${item.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                            <td class="text-center">
-                                <button class="p-button p-button-outlined p-2" title="Editar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
-                                <button class="p-button p-button-outlined p-2 text-red-500 border-red-500 hover:bg-red-50" title="Excluir"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                            </td>
-                        </tr>
-                    `;
+                    tableBody.innerHTML += `<tr>
+                        <td class="font-semibold">${item.codigo}</td>
+                        <td><div class="font-bold">${item.marca}</div><div class="text-xs text-slate-500">${item.categoria}</div></td>
+                        <td>${item.tamanho}</td>
+                        <td>${item.quantidade}</td>
+                        <td class="font-bold">R$ ${item.preco.toFixed(2)}</td>
+                    </tr>`;
                 });
-                document.getElementById('totalEstoque').innerText = totalItems + " Peças";
 
-                // Carregar Caixa
                 const resCaixa = await fetch(`${API_BASE}/api/caixa`);
                 const caixa = await resCaixa.json();
                 const caixaBody = document.getElementById('caixaTable');
                 caixaBody.innerHTML = '';
-                let totalCaixa = 0;
                 caixa.forEach(mov => {
-                    if(mov.tipo === 'ENTRADA') totalCaixa += mov.valor;
-                    else totalCaixa -= mov.valor;
-                    
-                    let badgeClass = mov.tipo === 'ENTRADA' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
-
-                    caixaBody.innerHTML += `
-                        <tr>
-                            <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${mov.tipo}</span></td>
-                            <td class="font-bold">R$ ${mov.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                            <td>${mov.descricao}</td>
-                            <td class="text-sm text-slate-500">${new Date(mov.data).toLocaleString()}</td>
-                        </tr>
-                    `;
+                    let badgeClass = mov.tipo === 'ENTRADA' ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100';
+                    caixaBody.innerHTML += `<tr>
+                        <td><span class="${badgeClass} px-2 py-1 rounded text-xs font-bold">${mov.tipo}</span></td>
+                        <td class="font-bold">R$ ${mov.valor.toFixed(2)}</td>
+                        <td>${mov.descricao}</td>
+                        <td class="text-sm text-slate-500">${new Date(mov.data).toLocaleString()}</td>
+                    </tr>`;
                 });
-                document.getElementById('caixaTotal').innerText = "R$ " + totalCaixa.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-
-                // Toast de Boas Vindas
-                setTimeout(() => showToast('Login Efetuado', 'Bem-vindo ao painel RF Outlet.'), 500);
-
-            } catch (err) { console.error(err); }
+            } catch (err) {}
         }
-        
-        loadData();
+
+        // Inicializar a tela carregando tudo
+        window.onload = () => {
+            loadRelatorios();
+            loadVendedores();
+            loadOutros();
+        };
     </script>
 </body>
 </html>
