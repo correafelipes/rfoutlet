@@ -9,7 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; }
         
-        /* Estilo Corporativo PrimeNG (Simulação com Tailwind) */
+        /* Estilo Corporativo PrimeNG */
         .p-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 6px; }
         .p-button { background-color: #3b82f6; color: #ffffff; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; font-weight: 500; transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; outline: none; border: 1px solid transparent; }
         .p-button:hover { background-color: #2563eb; }
@@ -25,9 +25,13 @@
         .p-datatable tr:hover td { background: #f8fafc; }
         .p-datatable-header { background: #f8fafc; border: 1px solid #e2e8f0; border-width: 1px 1px 0 1px; padding: 1rem; font-weight: 700; color: #334155; border-top-left-radius: 6px; border-top-right-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
 
+        .p-paginator { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-width: 0 1px 1px 1px; padding: 0.5rem 1rem; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
+        .p-paginator-element { cursor: pointer; min-width: 2.286rem; height: 2.286rem; border-radius: 50%; border: 0 none; display: inline-flex; align-items: center; justify-content: center; color: #475569; transition: box-shadow 0.2s, background-color 0.2s, color 0.2s; }
+        .p-paginator-element:hover { background: #e2e8f0; }
+        .p-paginator-element.p-highlight { background: #eff6ff; color: #3b82f6; font-weight: 700; }
+
         .nav-btn-active { background-color: #eff6ff; color: #3b82f6; font-weight: 700; border-right: 3px solid #3b82f6; }
         
-        /* Toast Container */
         #p-toast-container { position: fixed; top: 20px; right: 20px; width: 25rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
         .p-toast-message { background: #ffffff; border: solid #e2e8f0; border-width: 0 0 0 6px; color: #334155; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; animation: slideIn 0.3s ease-out forwards; }
         .p-toast-message.success { border-left-color: #22c55e; }
@@ -41,19 +45,58 @@
 
     <aside id="sidebar" class="w-64 bg-white flex-shrink-0 flex-col hidden lg:flex border-r border-slate-200 z-20 absolute lg:relative h-full transition-transform transform -translate-x-full lg:translate-x-0">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200">
-            <span class="text-slate-800 text-xl font-bold tracking-tight text-blue-600">RF Outlet</span>
+            <div class="flex items-center">
+                <svg class="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span class="text-slate-800 text-xl font-bold tracking-tight">RF Outlet</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-slate-500 hover:text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
         <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
-            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Painel Principal (Vendas)</button>
-            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Gestão de Produtos</button>
-            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Financeiro / Caixa</button>
+            <button onclick="showSection('dashboard')" class="nav-btn nav-btn-active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Painel Principal (Vendas)
+            </button>
+            <button onclick="showSection('estoque')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                Gestão de Produtos
+            </button>
+            <button onclick="showSection('caixa')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Financeiro / Caixa
+            </button>
+            <button onclick="showSection('escala')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z"></path></svg>
+                Escala Mensal
+            </button>
+            <button onclick="showSection('redes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                Redes Sociais
+            </button>
             <div class="px-6 py-2 mt-4 text-xs font-bold text-slate-400 uppercase">Administração</div>
-            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">Gestão de Equipe (Vendedores)</button>
+            <button onclick="showSection('equipe')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                Gestão de Equipe (Vendedores)
+            </button>
+            <button onclick="showSection('lojas')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                Lojas e Franquias
+            </button>
+            <button onclick="showSection('aprovacoes')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                Workflow & Aprovações
+            </button>
+            <button onclick="showSection('precificacao')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Precificação & Promoções
+            </button>
         </nav>
 
         <div class="p-4 border-t border-slate-200">
             <div class="flex items-center gap-3 mb-4 p-2">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600" id="userInitials">X</div>
                 <div class="overflow-hidden">
                     <p class="text-slate-800 text-sm font-bold truncate" id="userName">...</p>
                     <p class="text-slate-500 text-xs truncate" id="userRole">...</p>
@@ -63,9 +106,16 @@
         </div>
     </aside>
 
+    <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-10 hidden lg:hidden"></div>
+
     <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sticky top-0 z-10 shadow-sm w-full">
-            <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard (Vendas)</h2>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-10 shadow-sm w-full">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-500 hover:text-slate-700 bg-slate-100 rounded-md">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h2 class="text-xl font-semibold text-slate-800" id="pageTitle">Dashboard (Vendas)</h2>
+            </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 space-y-6">
@@ -182,7 +232,70 @@
                 </div>
             </section>
 
-            <!-- EQUIPE SECTION -->
+            <!-- ESCALA SECTION -->
+            <section id="section-escala" class="content-section hidden">
+                <div class="p-card p-8">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4">Controle de Escala de Funcionários</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
+                        <p class="text-blue-700 text-sm font-bold">Módulo em Desenvolvimento</p>
+                        <p class="text-blue-600 text-xs mt-1">O calendário interativo PrimeNG Schedule será implementado na próxima versão.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REDES SOCIAIS SECTION -->
+            <section id="section-redes" class="content-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full min-h-[500px]">
+                    <div class="p-card flex flex-col h-full shadow-md">
+                        <div class="p-datatable-header flex justify-between items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white !border-0 !rounded-t-md">
+                            <span class="font-bold text-lg">Instagram</span>
+                        </div>
+                        <div class="p-6 flex-1 bg-slate-50 flex items-center justify-center border border-t-0 border-slate-200 rounded-b-md">
+                            <div class="text-center">
+                                <h4 class="text-slate-600 font-bold mb-2">Conectar Conta</h4>
+                                <button class="p-button bg-pink-600 border-none">Vincular Instagram</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOJAS E APROVACOES E PRECIFICACAO SECTION (MANTIDOS DA VERSAO ANTERIOR) -->
+            <section id="section-lojas" class="content-section hidden">
+                <div class="p-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-slate-800">Lojas e Franquias</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                            <h4 class="font-bold text-lg">RF Outlet - Matriz (SP)</h4>
+                            <span class="text-green-600 font-bold">Operando</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-aprovacoes" class="content-section hidden">
+                <div class="p-card p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Workflow de Aprovações Pendentes</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 border border-orange-200 bg-orange-50 rounded-lg">
+                            <p class="font-bold text-slate-800">Vendedora Maria solicita 20% de desconto.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-precificacao" class="content-section hidden">
+                <div class="p-card p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Precificação e Promoções</h3>
+                    <div class="border border-slate-200 rounded-lg p-6 text-center">
+                        <h4 class="text-lg font-bold text-slate-700">Nenhuma campanha ativa.</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EQUIPE SECTION (AGORA COM O CADASTRO DE VENDEDOR) -->
             <section id="section-equipe" class="content-section hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Cadastro -->
@@ -231,6 +344,23 @@
     <script>
         const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : (window.location.hostname.includes('vercel.app') ? 'https://rfoutlet.onrender.com' : '');
 
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('hidden', '-translate-x-full');
+                sidebar.classList.add('flex', 'translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                setTimeout(() => {
+                    if (window.innerWidth < 1024) sidebar.classList.add('hidden');
+                }, 300);
+            }
+        }
+
         function showToast(title, detail, severity = 'success') {
             const container = document.getElementById('p-toast-container');
             const toast = document.createElement('div');
@@ -262,11 +392,13 @@
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById('section-' + name).classList.remove('hidden');
             
-            const titles = { 'dashboard': 'Dashboard (Vendas)', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'equipe': 'Gestão de Vendedores' };
+            const titles = { 'dashboard': 'Dashboard (Vendas)', 'estoque': 'Gestão de Produtos', 'caixa': 'Financeiro', 'escala': 'Escala Mensal', 'redes': 'Redes Sociais', 'equipe': 'Gestão de Vendedores', 'lojas': 'Lojas e Franquias', 'aprovacoes': 'Aprovações', 'precificacao': 'Precificação' };
             document.getElementById('pageTitle').innerText = titles[name];
             
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
             event.currentTarget.classList.add('nav-btn-active');
+            
+            if (window.innerWidth < 1024) toggleMobileMenu();
         }
 
         function limparFiltros() {
@@ -282,14 +414,11 @@
                 const dataInicio = document.getElementById('filtroInicio').value;
                 const dataFim = document.getElementById('filtroFim').value;
                 let url = `${API_BASE}/api/relatorios/vendas`;
-                if(dataInicio && dataFim) {
-                    url += `?data_inicio=${dataInicio}&data_fim=${dataFim}`;
-                }
+                if(dataInicio && dataFim) url += `?data_inicio=${dataInicio}&data_fim=${dataFim}`;
 
                 const res = await fetch(url);
                 const relatorio = await res.json();
 
-                // Preencher Ranking de Marcas
                 const tbodyMarcas = document.getElementById('rankingMarcas');
                 tbodyMarcas.innerHTML = '';
                 if(relatorio.por_marca.length === 0) tbodyMarcas.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
@@ -301,7 +430,6 @@
                     </tr>`;
                 });
 
-                // Preencher Ranking de Vendedores
                 const tbodyVends = document.getElementById('rankingVendedores');
                 tbodyVends.innerHTML = '';
                 if(relatorio.por_vendedor.length === 0) tbodyVends.innerHTML = '<tr><td colspan="3" class="text-center text-slate-400">Nenhuma venda no período.</td></tr>';
@@ -313,11 +441,9 @@
                     </tr>`;
                 });
 
-                // Preencher Comparativo Mensal (Sempre mostra)
                 if(relatorio.por_mes && relatorio.por_mes.length > 0) {
                     const mesAtual = relatorio.por_mes[0];
                     document.getElementById('mesAtualValor').innerText = formatMoney(mesAtual.total_mes);
-                    
                     if(mesAtual.comparativo) {
                         document.getElementById('mesAnteriorValor').innerText = formatMoney(mesAtual.comparativo.valor_anterior) + ` (${mesAtual.comparativo.mes_anterior})`;
                         let badgeColor = parseFloat(mesAtual.comparativo.porcentagem) >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
@@ -325,12 +451,10 @@
                         document.getElementById('mesAtualBadge').innerHTML = `<span class="${badgeColor} px-2 py-1 font-bold rounded">${sinal}${mesAtual.comparativo.porcentagem} em relação ao mês passado</span>`;
                     } else {
                         document.getElementById('mesAnteriorValor').innerText = 'R$ 0,00';
-                        document.getElementById('mesAtualBadge').innerHTML = `<span class="text-slate-500">Sem dados do mês anterior para comparar.</span>`;
+                        document.getElementById('mesAtualBadge').innerHTML = `<span class="text-slate-500">Sem dados para comparar.</span>`;
                     }
                 }
-            } catch (e) {
-                console.error("Erro Relatorios", e);
-            }
+            } catch (e) { console.error("Erro Relatorios", e); }
         }
 
         async function loadVendedores() {
@@ -347,16 +471,14 @@
                         <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${v.funcao}</span></td>
                     </tr>`;
                 });
-            } catch (e) { console.error(e); }
+            } catch (e) {}
         }
 
         async function cadastrarVendedor() {
             const nome = document.getElementById('novoNome').value;
             const login = document.getElementById('novoLogin').value;
             const senha = document.getElementById('novaSenha').value;
-
             if(!nome || !login || !senha) return showToast('Erro', 'Preencha todos os campos.', 'error');
-
             try {
                 const res = await fetch(`${API_BASE}/api/usuarios`, {
                     method: 'POST',
@@ -365,14 +487,12 @@
                 });
                 const data = await res.json();
                 if(data.success) {
-                    showToast('Sucesso', 'Vendedor cadastrado com sucesso!');
+                    showToast('Sucesso', 'Vendedor cadastrado!');
                     document.getElementById('novoNome').value = '';
                     document.getElementById('novoLogin').value = '';
                     loadVendedores();
-                } else {
-                    showToast('Erro', data.error, 'error');
-                }
-            } catch (e) { showToast('Erro', 'Erro na conexão.', 'error'); }
+                } else showToast('Erro', data.error, 'error');
+            } catch (e) {}
         }
 
         async function loadOutros() {
@@ -407,7 +527,6 @@
             } catch (err) {}
         }
 
-        // Inicializar a tela carregando tudo
         window.onload = () => {
             loadRelatorios();
             loadVendedores();
